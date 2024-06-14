@@ -33,7 +33,7 @@ export default async function Index() {
             }}
             repeat={6}
           >
-            <p className="font-bold italic md:text-3xl text-xl text-gray-900">
+            <p className="my-auto font-bold italic md:text-3xl text-xl text-gray-900">
               UNB COLLECTION
             </p>
             <span>
