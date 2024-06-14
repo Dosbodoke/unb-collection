@@ -10,11 +10,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductBreadcrumb } from "./_components/breadcrumb";
+import { createClient } from "@/utils/supabase/server";
+import { notFound } from "next/navigation";
+import { ShoppingCartIcon } from "lucide-react";
 
-export default function Component() {
+type Props = {
+  params: { slug: string };
+  searchParams: { [key: string]: string | undefined };
+};
+
+export default async function ProductPage({
+  params: { slug },
+  searchParams,
+}: Props) {
+  const supabase = createClient();
+
+  const { data: product, error } = await supabase
+    .from("product")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error) {
+    return notFound();
+  }
+
   return (
     <div className="max-w-6xl px-4 mx-auto py-6 flex flex-col gap-6">
-      <ProductBreadcrumb />
+      <ProductBreadcrumb itemName={product.name} />
       <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
         <div className="grid gap-4 md:gap-10 items-start">
           <div className="grid gap-4">
@@ -71,13 +94,8 @@ export default function Component() {
         </div>
         <div className="grid gap-4 md:gap-10 items-start">
           <div className="grid gap-4">
-            <h1 className="font-bold text-3xl lg:text-4xl">
-              Acme Circles T-Shirt
-            </h1>
-            <div>
-              <p>60% combed ringspun cotton/40% polyester jersey tee.</p>
-            </div>
-
+            <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>
+            <p>{product.description}</p>
             <div>
               <span className="line-through text-muted-foreground text-base">
                 de R$99
@@ -175,22 +193,30 @@ export default function Component() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="quantity" className="text-base">
-                Cantidad
+                Quantidade
               </Label>
               <Select defaultValue="1">
                 <SelectTrigger className="w-24">
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
-                  <SelectItem value="5">5</SelectItem>
+                  {Array.from({ length: product.stock }).map((_, idx) => (
+                    <SelectItem value={(idx + 1).toString()}>
+                      {idx + 1}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
-            <Button size="lg">Adicionar ao carrinho</Button>
+            <Button
+              variant="expandIcon"
+              Icon={ShoppingCartIcon}
+              iconPlacement="right"
+              size="lg"
+              type="button"
+            >
+              Adicionar ao carrinho
+            </Button>
           </form>
         </div>
       </div>

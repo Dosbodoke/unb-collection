@@ -37,11 +37,11 @@ export default function RootLayout({
     <html lang="pt-BR" className={GeistSans.className}>
       <body className="bg-[#f6f6f6] text-foreground">
         <Navbar />
+        {drawer}
         <main className="min-h-screen flex flex-col items-center pt-20">
-          {drawer}
           {children}
-          <WhatsAppButton />
         </main>
+        <WhatsAppButton />
         <Footer />
       </body>
     </html>

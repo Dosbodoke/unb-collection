@@ -20,9 +20,9 @@ export default async function Index() {
     ) || [];
 
   return (
-    <div className="flex-1 flex flex-col w-full">
+    <div className="flex-1 flex flex-col">
       <HeroCarousel items={urls} />
-      <div className="relative h-full w-full overflow-hidden rounded-lg pb-8 space-y-4 py-8">
+      <div className="relative h-full w-full overflow-hidden space-y-4 py-8">
         <div className="relative w-full overflow-hidden z-50">
           <Marquee
             pauseOnHover

@@ -27,6 +27,32 @@ export type Database = {
         }
         Relationships: []
       }
+      highlights: {
+        Row: {
+          created_at: string
+          id: number
+          product_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          product_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          product_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "highlights_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product: {
         Row: {
           category_id: number
@@ -35,6 +61,7 @@ export type Database = {
           id: number
           name: string
           price: number
+          slug: string
           stock: number
         }
         Insert: {
@@ -44,6 +71,7 @@ export type Database = {
           id?: number
           name: string
           price: number
+          slug: string
           stock?: number
         }
         Update: {
@@ -53,11 +81,19 @@ export type Database = {
           id?: number
           name?: string
           price?: number
+          slug?: string
           stock?: number
         }
         Relationships: [
           {
             foreignKeyName: "product_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_category_id_fkey1"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "category"

@@ -1,9 +1,5 @@
-"use client";
-
 import * as React from "react";
-import Link from "next/link";
 
-import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,7 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { HomeIcon } from "lucide-react";
 
-export const ProductBreadcrumb = () => {
+export const ProductBreadcrumb = ({ itemName }: { itemName: string }) => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -29,7 +25,7 @@ export const ProductBreadcrumb = () => {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>Cropped UNB</BreadcrumbPage>
+          <BreadcrumbPage>{itemName}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
