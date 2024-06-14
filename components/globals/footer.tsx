@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 
 export const Footer = () => {
   return (
-    <footer className="bg-gray-900 py-6 sm:py-12 sm:px-0 px-2">
+    <footer className="bg-gray-900 pt-4 mt-8 pb-16 sm:py-12 sm:px-0 px-2">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
           <Link href="#" className="flex items-center" prefetch={false}>

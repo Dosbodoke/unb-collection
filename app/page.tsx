@@ -48,6 +48,7 @@ export default async function Index() {
             first: "#ff2975 ",
             second: "#8c1eff",
           }}
+          sparklesCount={6}
         />
         <DotPattern
           width={20}
