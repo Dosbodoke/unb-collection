@@ -1,8 +1,4 @@
-"use client";
-
 import React from "react";
-
-import { motion } from "framer-motion";
 
 interface Product {
   id: number;
@@ -86,18 +82,13 @@ const products: Product[] = [
   },
 ];
 
-const ProductGrid: React.FC = () => {
+const ProductGrid = () => {
   return (
-    <ul className="grid sm:grid-cols-4 grid-cols-2 border-t border-black border-b">
+    <ul className="grid max-w-6xl mx-auto sm:grid-cols-4 grid-cols-2 border border-black gap-[1px] bg-black">
       {products.map((product, index) => (
-        <motion.li
+        <li
           key={product.id}
-          className={`border-black p-2 flex flex-col items-center ${
-            index % 2 === 0 ? "border-r" : ""
-          } ${index >= 2 ? "border-t" : ""}`}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
+          className="p-2 flex flex-col items-center bg-white"
         >
           <img
             src={product.imageUrl}
@@ -108,26 +99,10 @@ const ProductGrid: React.FC = () => {
             <h3 className="text-sm truncate">{product.name}</h3>
             <p className="text-gray-500">R$ {product.price.toFixed(2)}</p>
           </div>
-        </motion.li>
-        // <li
-        //   key={product.id}
-        //   className={`border-black p-2 flex flex-col items-center ${
-        //     index % 2 === 0 ? "border-r" : ""
-        //   } ${index >= 2 ? "border-t" : ""}`}
-        // >
-        //   <img
-        //     src={product.imageUrl}
-        //     alt={product.name}
-        //     className="mb-2 w-full"
-        //   />
-        //   <div className="w-full mt-auto">
-        //     <h3 className="text-sm truncate">{product.name}</h3>
-        //     <p className="text-gray-500">R$ {product.price.toFixed(2)}</p>
-        //   </div>
-        // </li>
+        </li>
       ))}
     </ul>
   );
 };
 
-export default ProductGrid;
+export { ProductGrid };
