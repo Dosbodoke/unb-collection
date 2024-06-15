@@ -1,101 +1,51 @@
 import React from "react";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-}
+import { createClient } from "@/utils/supabase/server";
+import { UnbCollectionIcon } from "@/assets";
+import Link from "next/link";
 
-const products: Product[] = [
-  {
-    id: 1,
-    name: "TÊNIS COM VOLUMESNADJKASNDKJSANDKJASNDKJASNDJNASD",
-    price: 279.0,
-    imageUrl: "path_to_image1",
-  },
-  {
-    id: 2,
-    name: "TÊNIS COM VOLUME DE CANO ALTO OLD SCHOOOL",
-    price: 279.0,
-    imageUrl: "path_to_image2",
-  },
-  {
-    id: 3,
-    name: "SAPATO COM VOLUME",
-    price: 379.0,
-    imageUrl: "path_to_image3",
-  },
-  {
-    id: 4,
-    name: "TÊNIS MONOCROMÁTICO",
-    price: 259.0,
-    imageUrl: "path_to_image4",
-  },
-  {
-    id: 5,
-    name: "SAPATO COM VOLUME",
-    price: 379.0,
-    imageUrl: "path_to_image5",
-  },
-  {
-    id: 6,
-    name: "TÊNIS MONOCROMÁTICO",
-    price: 259.0,
-    imageUrl: "path_to_image6",
-  },
-  {
-    id: 7,
-    name: "SAPATO COM VOLUME",
-    price: 379.0,
-    imageUrl: "path_to_image5",
-  },
-  {
-    id: 8,
-    name: "TÊNIS MONOCROMÁTICO",
-    price: 259.0,
-    imageUrl: "path_to_image6",
-  },
-  {
-    id: 9,
-    name: "SAPATO COM VOLUME",
-    price: 379.0,
-    imageUrl: "path_to_image5",
-  },
-  {
-    id: 10,
-    name: "TÊNIS MONOCROMÁTICO",
-    price: 259.0,
-    imageUrl: "path_to_image6",
-  },
-  {
-    id: 11,
-    name: "SAPATO COM VOLUME",
-    price: 379.0,
-    imageUrl: "path_to_image5",
-  },
-  {
-    id: 12,
-    name: "TÊNIS MONOCROMÁTICO",
-    price: 259.0,
-    imageUrl: "path_to_image6",
-  },
-];
+const ProductGrid = async () => {
+  const supabase = createClient();
 
-const ProductGrid = () => {
+  const { data: highlights, error } = await supabase.from("highlights").select(`
+    id,
+    product(*)
+  `);
+
+  if (error) return null;
+
+  const products = highlights.flatMap((h) => h.product || []);
+
   return (
-    <ul className="grid max-w-6xl mx-auto sm:grid-cols-4 grid-cols-2 border border-black gap-[1px] bg-black">
+    <ul className="grid max-w-6xl mx-auto sm:grid-cols-3 grid-cols-2">
       {products.map((product, index) => (
-        <li key={product.id} className="flex flex-col items-center bg-white">
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="w-full h-72 bg-[#eeeff4]"
-          />
-          <div className="p-2 pb-6 w-full mt-auto border-t border-black">
-            <h3 className="text-sm truncate">{product.name}</h3>
-            <p className="text-gray-500">R$ {product.price.toFixed(2)}</p>
-          </div>
+        <li
+          key={product.id}
+          className={`bg-white border border-black ${
+            index % 2 !== 1 ? "border-r-0" : ""
+          } ${
+            index < products.length - (products.length % 2 === 0 ? 2 : 1)
+              ? "border-b-0"
+              : ""
+          }`}
+        >
+          <Link
+            href={`/product/${product.slug}`}
+            className="flex flex-col items-center"
+          >
+            <div className="w-full h-72 bg-[#eeeff4] grid place-items-center">
+              <UnbCollectionIcon />
+            </div>
+            {/* <img
+              src="/"
+              alt={product.name}
+              className="w-full h-72 bg-[#eeeff4]"
+            /> */}
+            <div className="p-2 pb-6 w-full mt-auto border-t border-black">
+              <h3 className="text-sm truncate">{product.name}</h3>
+              <p className="text-gray-500">R$ {product.price.toFixed(2)}</p>
+            </div>
+          </Link>
         </li>
       ))}
     </ul>
