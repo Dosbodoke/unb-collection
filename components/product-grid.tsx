@@ -86,16 +86,13 @@ const ProductGrid = () => {
   return (
     <ul className="grid max-w-6xl mx-auto sm:grid-cols-4 grid-cols-2 border border-black gap-[1px] bg-black">
       {products.map((product, index) => (
-        <li
-          key={product.id}
-          className="p-2 flex flex-col items-center bg-white"
-        >
+        <li key={product.id} className="flex flex-col items-center bg-white">
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="mb-2 w-full"
+            className="w-full h-72 bg-[#eeeff4]"
           />
-          <div className="w-full mt-auto">
+          <div className="p-2 pb-6 w-full mt-auto border-t border-black">
             <h3 className="text-sm truncate">{product.name}</h3>
             <p className="text-gray-500">R$ {product.price.toFixed(2)}</p>
           </div>
