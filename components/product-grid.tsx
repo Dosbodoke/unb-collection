@@ -21,16 +21,7 @@ const ProductGrid = async () => {
   return (
     <ul className="grid w-full max-w-6xl mx-auto sm:grid-cols-3 grid-cols-2">
       {products.map((product, index) => (
-        <li
-          key={product.id}
-          className={`bg-white border border-black ${
-            index % 2 !== 1 ? "border-r-0" : ""
-          } ${
-            index < products.length - (products.length % 2 === 0 ? 2 : 1)
-              ? "border-b-0"
-              : ""
-          }`}
-        >
+        <li key={product.id} className="bg-white border border-black">
           <Link
             href={`/product/${product.slug}`}
             className="flex flex-col items-center"
@@ -42,9 +33,11 @@ const ProductGrid = async () => {
                     .data.publicUrl
                 }
                 back={
-                  supabase.storage
-                    .from("products")
-                    .getPublicUrl(product.images[0]).data.publicUrl
+                  product.images.length > 0
+                    ? supabase.storage
+                        .from("products")
+                        .getPublicUrl(product.images[0]).data.publicUrl
+                    : null
                 }
                 productName={product.name}
               />
