@@ -5,7 +5,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export const SizeVariant = () => {
   return (
     <Tabs defaultValue="md">
-      <TabsList>
+      <div>Tamanho</div>
+      <TabsList className="bg-gray-200">
         <TabsTrigger value="xs">XS</TabsTrigger>
         <TabsTrigger value="md">MD</TabsTrigger>
         <TabsTrigger value="lg">LG</TabsTrigger>
