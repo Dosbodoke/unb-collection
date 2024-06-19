@@ -61,7 +61,7 @@ export default async function ProductPage({
           <div className="grid gap-4">
             <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>
             {product.description ? <p>{product.description}</p> : null}
-            <ProductPrice />
+            <ProductPrice price={product.price} discountPercentage={0.2} />
           </div>
           <form className="grid gap-4 md:gap-6">
             <div className="grid gap-2">
