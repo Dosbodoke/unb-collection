@@ -7,7 +7,7 @@ import { CartButton } from "./cart-button";
 
 const Navbar = () => {
   return (
-    <nav className="fixed inset-x-2 top-2 z-[999] mx-auto items-center justify-between flex max-w-6xl overflow-hidden rounded-xl backdrop-blur-sm bg-white/80 p-3 h-16">
+    <nav className="fixed inset-x-2 top-2 z-50 mx-auto items-center justify-between flex max-w-6xl overflow-hidden rounded-xl backdrop-blur-sm bg-white/80 p-3 h-16">
       <Link href="/">
         <UnbCollectionIcon className="fill-black" />
       </Link>
