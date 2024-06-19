@@ -3,6 +3,7 @@ import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { UnbCollectionIcon } from "@/assets";
 import Link from "next/link";
+import Image from "next/image";
 
 const ProductGrid = async () => {
   const supabase = createClient();
@@ -17,7 +18,7 @@ const ProductGrid = async () => {
   const products = highlights.flatMap((h) => h.product || []);
 
   return (
-    <ul className="grid max-w-6xl mx-auto sm:grid-cols-3 grid-cols-2">
+    <ul className="grid w-full max-w-6xl mx-auto sm:grid-cols-3 grid-cols-2">
       {products.map((product, index) => (
         <li
           key={product.id}
@@ -33,9 +34,22 @@ const ProductGrid = async () => {
             href={`/product/${product.slug}`}
             className="flex flex-col items-center"
           >
-            <div className="w-full h-72 bg-[#eeeff4] grid place-items-center">
-              <UnbCollectionIcon />
-            </div>
+            {product.cover ? (
+              <Image
+                src={
+                  supabase.storage.from("products").getPublicUrl(product.cover)
+                    .data.publicUrl
+                }
+                alt={`${product.name} image`}
+                className="mx-auto w-full object-cover h-[437px] max-w-md"
+                width={375}
+                height={437}
+              />
+            ) : (
+              <div className="w-full h-72 bg-[#eeeff4] grid place-items-center">
+                <UnbCollectionIcon />
+              </div>
+            )}
             {/* <img
               src="/"
               alt={product.name}

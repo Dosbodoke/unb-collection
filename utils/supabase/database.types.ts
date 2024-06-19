@@ -47,7 +47,7 @@ export type Database = {
           {
             foreignKeyName: "highlights_product_id_fkey"
             columns: ["product_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "product"
             referencedColumns: ["id"]
           },
@@ -56,9 +56,11 @@ export type Database = {
       product: {
         Row: {
           category_id: number
+          cover: string | null
           created_at: string
           description: string | null
           id: number
+          images: string[]
           name: string
           price: number
           slug: string
@@ -66,9 +68,11 @@ export type Database = {
         }
         Insert: {
           category_id: number
+          cover?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          images?: string[]
           name: string
           price: number
           slug: string
@@ -76,9 +80,11 @@ export type Database = {
         }
         Update: {
           category_id?: number
+          cover?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          images?: string[]
           name?: string
           price?: number
           slug?: string
@@ -391,6 +397,10 @@ export type Database = {
           metadata: Json
           updated_at: string
         }[]
+      }
+      operation: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       search: {
         Args: {

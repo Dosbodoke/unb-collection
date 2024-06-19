@@ -8,11 +8,13 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ProductBreadcrumb } from "./_components/breadcrumb";
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import { ShoppingCartIcon } from "lucide-react";
+import { ImageCarousel } from "./_components/image-carousel";
+import { ProductPrice } from "./_components/product-price";
+import { SizeVariant } from "./_components/size-variant";
 
 type Props = {
   params: { slug: string };
@@ -39,81 +41,27 @@ export default async function ProductPage({
     <div className="max-w-6xl px-4 mx-auto py-6 flex flex-col gap-6">
       <ProductBreadcrumb itemName={product.name} />
       <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
-        <div className="grid gap-4 md:gap-10 items-start">
-          <div className="grid gap-4">
-            <img
-              src="/placeholder.svg"
-              alt="Product Image"
-              width={600}
-              height={900}
-              className="aspect-[2/3] object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
-            />
-            <div className="hidden md:flex gap-4 items-start">
-              <button className="border hover:border-gray-900 rounded-lg overflow-hidden transition-colors dark:hover:border-gray-50">
-                <img
-                  src="/placeholder.svg"
-                  alt="Preview thumbnail"
-                  width={100}
-                  height={120}
-                  className="aspect-[5/6] object-cover"
-                />
-                <span className="sr-only">View Image 1</span>
-              </button>
-              <button className="border hover:border-gray-900 rounded-lg overflow-hidden transition-colors dark:hover:border-gray-50">
-                <img
-                  src="/placeholder.svg"
-                  alt="Preview thumbnail"
-                  width={100}
-                  height={120}
-                  className="aspect-[5/6] object-cover"
-                />
-                <span className="sr-only">View Image 2</span>
-              </button>
-              <button className="border hover:border-gray-900 rounded-lg overflow-hidden transition-colors dark:hover:border-gray-50">
-                <img
-                  src="/placeholder.svg"
-                  alt="Preview thumbnail"
-                  width={100}
-                  height={120}
-                  className="aspect-[5/6] object-cover"
-                />
-                <span className="sr-only">View Image 3</span>
-              </button>
-              <button className="border hover:border-gray-900 rounded-lg overflow-hidden transition-colors dark:hover:border-gray-50">
-                <img
-                  src="/placeholder.svg"
-                  alt="Preview thumbnail"
-                  width={100}
-                  height={120}
-                  className="aspect-[5/6] object-cover"
-                />
-                <span className="sr-only">View Image 4</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="grid gap-4 md:gap-10 items-start">
+        <ImageCarousel
+          image_urls={
+            [
+              product.cover
+                ? supabase.storage.from("products").getPublicUrl(product.cover)
+                    .data.publicUrl
+                : null,
+              ...product.images.map(
+                (image) =>
+                  supabase.storage.from("products").getPublicUrl(image).data
+                    .publicUrl
+              ),
+            ].filter((val) => val !== null) as string[]
+          }
+          productName={product.name}
+        />
+        <div className="space-y-4">
           <div className="grid gap-4">
             <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>
-            <p>{product.description}</p>
-            <div>
-              <span className="line-through text-muted-foreground text-base">
-                de R$99
-              </span>
-              <span className="text-4xl font-bold">
-                <div className="flex items-center gap-2">
-                  <div className="text-4xl font-bold">
-                    R${(99 * (1 - 0.2)).toFixed(2)}
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className="bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300"
-                  >
-                    {(0.2 * 100).toFixed(0)}% off
-                  </Badge>
-                </div>
-              </span>
-            </div>
+            {product.description ? <p>{product.description}</p> : null}
+            <ProductPrice />
           </div>
           <form className="grid gap-4 md:gap-6">
             <div className="grid gap-2">
@@ -148,49 +96,7 @@ export default async function ProductPage({
                 </Label>
               </RadioGroup>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="size" className="text-base">
-                Size
-              </Label>
-              <RadioGroup
-                id="size"
-                defaultValue="m"
-                className="flex items-center gap-2"
-              >
-                <Label
-                  htmlFor="size-xs"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="size-xs" value="xs" />
-                  XS
-                </Label>
-                <Label
-                  htmlFor="size-s"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="size-s" value="s" />S
-                </Label>
-                <Label
-                  htmlFor="size-m"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="size-m" value="m" />M
-                </Label>
-                <Label
-                  htmlFor="size-l"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="size-l" value="l" />L
-                </Label>
-                <Label
-                  htmlFor="size-xl"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="size-xl" value="xl" />
-                  XL
-                </Label>
-              </RadioGroup>
-            </div>
+            <SizeVariant />
             <div className="grid gap-2">
               <Label htmlFor="quantity" className="text-base">
                 Quantidade

@@ -319,6 +319,7 @@ const CarouselIndicator = React.forwardRef<
       onClick={() => onThumbClick(index)}
       {...props}
     >
+      {children}
       <span className="sr-only">slide {index + 1} </span>
     </Button>
   );
