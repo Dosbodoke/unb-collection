@@ -40,7 +40,7 @@ const ImageCarousel = ({
             <Image
               src={url}
               alt={`Imagem de ${productName}`}
-              className="mx-auto w-full"
+              className="mx-auto w-full rounded-md"
               width={375}
               height={437}
             />
