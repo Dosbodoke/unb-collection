@@ -1,20 +1,12 @@
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ProductBreadcrumb } from "./_components/breadcrumb";
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
-import { ShoppingCartIcon } from "lucide-react";
+import { HeartIcon, ShoppingCartIcon } from "lucide-react";
 import { ImageCarousel } from "./_components/image-carousel";
 import { ProductPrice } from "./_components/product-price";
 import { SizeVariant } from "./_components/size-variant";
+import { ColorVariant } from "./_components/color-variant";
 
 type Props = {
   params: { slug: string };
@@ -61,68 +53,33 @@ export default async function ProductPage({
           <div className="grid gap-4">
             <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>
             {product.description ? <p>{product.description}</p> : null}
-            <ProductPrice price={product.price} discountPercentage={0.2} />
           </div>
           <form className="grid gap-4 md:gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="color" className="text-base">
-                Color
-              </Label>
-              <RadioGroup
-                id="color"
-                defaultValue="black"
-                className="flex items-center gap-2"
-              >
-                <Label
-                  htmlFor="color-black"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="color-black" value="black" />
-                  Black
-                </Label>
-                <Label
-                  htmlFor="color-white"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="color-white" value="white" />
-                  White
-                </Label>
-                <Label
-                  htmlFor="color-blue"
-                  className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                >
-                  <RadioGroupItem id="color-blue" value="blue" />
-                  Blue
-                </Label>
-              </RadioGroup>
-            </div>
             <SizeVariant />
-            <div className="grid gap-2">
-              <Label htmlFor="quantity" className="text-base">
-                Quantidade
-              </Label>
-              <Select defaultValue="1">
-                <SelectTrigger className="w-24">
-                  <SelectValue placeholder="Seleccionar" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Array.from({ length: product.stock }).map((_, idx) => (
-                    <SelectItem value={(idx + 1).toString()}>
-                      {idx + 1}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <ColorVariant />
+            <ProductPrice price={product.price} discountPercentage={0.2} />
+            <div className="flex gap-4">
+              <Button
+                variant="expandIcon"
+                Icon={ShoppingCartIcon}
+                iconPlacement="right"
+                size="lg"
+                type="button"
+                className="flex-1"
+              >
+                Adicionar ao carrinho
+              </Button>
+
+              <Button
+                variant="outline"
+                Icon={ShoppingCartIcon}
+                iconPlacement="right"
+                size="icon"
+                type="button"
+              >
+                <HeartIcon />
+              </Button>
             </div>
-            <Button
-              variant="expandIcon"
-              Icon={ShoppingCartIcon}
-              iconPlacement="right"
-              size="lg"
-              type="button"
-            >
-              Adicionar ao carrinho
-            </Button>
           </form>
         </div>
       </div>

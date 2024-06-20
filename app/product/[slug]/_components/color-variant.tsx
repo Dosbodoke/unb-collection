@@ -29,28 +29,26 @@ const RadioGroupItem = React.forwardRef<
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        "border-[#e5e7eb] text-sm font-light bg-white border data-[state=checked]:border-[#3b82f6] h-10 rounded-md p-2 flex-1 hover:shadow-xl transition-shadow ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed",
+        "border-[#e5e7eb] text-sm font-light bg-transparent border-2 data-[state=checked]:border-[#3b82f6] h-8 w-8 rounded-full hover:shadow-xl transition-shadow ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed",
         className
       )}
       value={value}
       {...props}
-    >
-      {value}
-    </RadioGroupPrimitive.Item>
+    ></RadioGroupPrimitive.Item>
   );
 });
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 export { RadioGroup, RadioGroupItem };
 
-export const SizeVariant = () => {
+export const ColorVariant = () => {
   return (
     <div className="flex flex-col gap-2">
-      <Label className="text-base">Tamanho</Label>
+      <Label className="text-base">Cor</Label>
       <RadioGroup>
-        <RadioGroupItem className="flex-grow-0 px-3" value="P" />
-        <RadioGroupItem className="flex-grow-0 px-3" value="M" />
-        <RadioGroupItem className="flex-grow-0 px-3" value="G" />
+        <RadioGroupItem value="green" className="bg-green-400" />
+        <RadioGroupItem value="blue" className="bg-blue-400" />
+        <RadioGroupItem value="black" className="bg-black" />
       </RadioGroup>
     </div>
   );

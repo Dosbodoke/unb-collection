@@ -10,6 +10,7 @@ export const ProductPrice = ({
 }) => {
   return (
     <div>
+      <div className="w-full h-[2px] bg-secondary-foreground rounded-full shadow mb-2"></div>
       {discountPercentage ? (
         <div className="flex items-center gap-2">
           <div className="line-through text-muted-foreground text-base">
