@@ -58,14 +58,13 @@ export default async function ProductPage({
             <SizeVariant />
             <ColorVariant />
             <ProductPrice price={product.price} discountPercentage={0.2} />
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <Button
                 variant="expandIcon"
                 Icon={ShoppingCartIcon}
                 iconPlacement="right"
-                size="lg"
                 type="button"
-                className="flex-1"
+                className="px-6 rounded-sm"
               >
                 Adicionar ao carrinho
               </Button>
@@ -76,6 +75,7 @@ export default async function ProductPage({
                 iconPlacement="right"
                 size="icon"
                 type="button"
+                className="rounded-sm"
               >
                 <HeartIcon />
               </Button>
