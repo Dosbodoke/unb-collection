@@ -3,15 +3,12 @@
 import {
   Carousel,
   CarouselContent,
-  CarouselIndicator,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  CarouselThumbsContainer,
 } from "@/components/ui/carousel";
 
 import React from "react";
-import AutoHeight from "embla-carousel-auto-height";
 import { UnbCollectionIcon } from "@/assets";
 import Image from "next/image";
 

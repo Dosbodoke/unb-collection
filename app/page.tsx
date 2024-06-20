@@ -23,23 +23,6 @@ export default async function Index() {
     <div className="flex-1 flex flex-col">
       <HeroCarousel items={urls} />
       <div className="relative h-full w-full overflow-hidden space-y-4 py-8">
-        {/* <div className="relative w-full overflow-hidden z-50">
-          <Marquee
-            className="[--duration:8s] justify-center overflow-hidden"
-            style={{
-              maskImage:
-                "linear-gradient(to left, transparent 0%, black 20%, black 80%, transparent 95%)",
-            }}
-            repeat={5}
-          >
-            <p className="inline-block my-auto font-bold italic md:text-3xl text-xl text-gray-900">
-              UNB COLLECTION
-            </p>
-            <span>
-              <UnbInlineIcon />
-            </span>
-          </Marquee>
-        </div> */}
         <SparklesText
           className="text-center"
           text="Destaques"

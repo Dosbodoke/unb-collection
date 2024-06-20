@@ -17,7 +17,6 @@
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
-    "embla-carousel-auto-height": "^8.1.5",
     "embla-carousel-autoplay": "^8.1.5",
     "embla-carousel-fade": "^8.1.5",
     "embla-carousel-react": "^8.1.5",
