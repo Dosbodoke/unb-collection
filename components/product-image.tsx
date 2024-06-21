@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-// import Link from "next/link";
 
 const ImageWithHover = ({
   productName,
@@ -13,32 +12,40 @@ const ImageWithHover = ({
   cover: string;
   back: string | null;
 }) => {
-  const [currentImage, setCurrentImage] = useState(cover);
-
-  const showBackCover = () => {
-    if (back) setCurrentImage(back);
-  };
-  const showFrontCover = () => {
-    setCurrentImage(cover);
-  };
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
       className="w-full relative"
-      onMouseEnter={showBackCover}
-      onMouseLeave={showFrontCover}
-      onTouchStart={showBackCover}
-      onTouchEnd={showFrontCover}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setIsHovered(false)}
     >
-      <Image
-        src={currentImage}
-        alt={`${productName} image`}
-        className="mx-auto w-full object-cover h-[437px] max-w-md"
-        width={375}
-        height={437}
-        priority={true}
-      />
-      {/* {back ? <Link rel="preload" href={back} as="image" /> : null} */}
+      <div className="relative w-full h-[437px] max-w-md">
+        <Image
+          src={cover}
+          alt={`${productName} cover image`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+            isHovered && back ? "opacity-0" : "opacity-100"
+          }`}
+          width={375}
+          height={437}
+          priority={true}
+        />
+        {back ? (
+          <Image
+            src={back}
+            alt={`${productName} back image`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
+            width={375}
+            height={437}
+            priority={true}
+          />
+        ) : null}
+      </div>
     </div>
   );
 };
