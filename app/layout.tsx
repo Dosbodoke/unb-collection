@@ -4,6 +4,7 @@ import { Navbar } from "@/components/globals/navbar";
 import { WhatsAppButton } from "@/components/globals/whatsapp";
 import { Footer } from "@/components/globals/footer";
 import { type Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -40,6 +41,7 @@ export default function RootLayout({
         {drawer}
         <main className="min-h-screen flex flex-col items-center pt-20">
           {children}
+          <Analytics />
         </main>
         <WhatsAppButton />
         <Footer />
