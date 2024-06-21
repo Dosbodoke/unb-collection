@@ -8,6 +8,7 @@ import { cn } from "@/utils/cn";
 import SparklesText from "@/components/magicui/sparkles-text";
 
 import { createClient } from "@/utils/supabase/server";
+import { HeroSection } from "./_components/hero-section";
 
 export default async function Index() {
   const supabase = createClient();
@@ -21,7 +22,7 @@ export default async function Index() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <HeroCarousel items={urls} />
+      <HeroSection items={urls} />
       <div className="relative h-full w-full overflow-hidden space-y-4 py-8">
         <SparklesText
           className="text-center"
