@@ -31,9 +31,9 @@ const ImageCarousel = ({
     <Carousel opts={{ loop: true }}>
       <CarouselNext className="right-2 z-50" />
       <CarouselPrevious className="left-2 z-50" />
-      <CarouselContent className="m-0">
+      <CarouselContent className="-ml-2">
         {image_urls.map((url) => (
-          <CarouselItem key={`item-${url}`} className="bg-transparent">
+          <CarouselItem key={`item-${url}`} className="bg-transparent pl-2">
             <Image
               src={url}
               alt={`Imagem de ${productName}`}
