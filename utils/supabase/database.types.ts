@@ -62,9 +62,7 @@ export type Database = {
           id: number
           images: string[]
           name: string
-          price: number
           slug: string
-          stock: number
         }
         Insert: {
           category_id: number
@@ -74,9 +72,7 @@ export type Database = {
           id?: number
           images?: string[]
           name: string
-          price: number
           slug: string
-          stock?: number
         }
         Update: {
           category_id?: number
@@ -86,9 +82,7 @@ export type Database = {
           id?: number
           images?: string[]
           name?: string
-          price?: number
           slug?: string
-          stock?: number
         }
         Relationships: [
           {

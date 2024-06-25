@@ -3,7 +3,6 @@ import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { UnbCollectionIcon } from "@/assets";
 import Link from "next/link";
-import Image from "next/image";
 import { ImageWithHover } from "./product-image";
 
 const ProductGrid = async () => {
@@ -11,7 +10,10 @@ const ProductGrid = async () => {
 
   const { data: highlights, error } = await supabase.from("highlights").select(`
     id,
-    product(*)
+    product(
+      *,
+      products_skus(*)
+    )
   `);
 
   if (error) return null;
@@ -33,10 +35,10 @@ const ProductGrid = async () => {
                     .data.publicUrl
                 }
                 back={
-                  product.images.length > 0
+                  product.images && product.images.length > 0
                     ? supabase.storage
                         .from("products")
-                        .getPublicUrl(product.images[0]).data.publicUrl
+                        .getPublicUrl(product.images[0]!).data.publicUrl
                     : null
                 }
                 productName={product.name}
@@ -48,7 +50,13 @@ const ProductGrid = async () => {
             )}
             <div className="p-2 pb-6 w-full mt-auto border-t border-black">
               <h3 className="text-sm truncate">{product.name}</h3>
-              <p className="text-gray-500">R${product.price.toFixed(2)}</p>
+              <p className="text-gray-500">
+                {product.products_skus && product.products_skus.length > 0
+                  ? `R$${Math.min(
+                      ...product.products_skus.map((sku) => sku.price)
+                    ).toFixed(2)}`
+                  : "Preço indisponível"}
+              </p>
             </div>
           </Link>
         </li>
