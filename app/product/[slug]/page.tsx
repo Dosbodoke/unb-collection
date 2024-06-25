@@ -1,17 +1,27 @@
-import { Button } from "@/components/ui/button";
 import { ProductBreadcrumb } from "./_components/breadcrumb";
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
-import { HeartIcon, ShoppingCartIcon } from "lucide-react";
 import { ImageCarousel } from "./_components/image-carousel";
-import { ProductPrice } from "./_components/product-price";
-import { SizeVariant } from "./_components/size-variant";
-import { ColorVariant } from "./_components/color-variant";
+
+import { ProductForm } from "./_components/product-form";
 
 type Props = {
   params: { slug: string };
   searchParams: { [key: string]: string | undefined };
 };
+
+// Define the type for variants
+export type Variant = {
+  price: number;
+  stock: number;
+  size: { value: string };
+  color: { value: string };
+};
+
+// Type guard to ensure size and color are not null
+function isValidVariant(variant: any): variant is Variant {
+  return variant.size !== null && variant.color !== null;
+}
 
 export default async function ProductPage({
   params: { slug },
@@ -26,6 +36,28 @@ export default async function ProductPage({
     .single();
 
   if (error) {
+    return notFound();
+  }
+
+  const { data: variants, error: variantError } = await supabase
+    .from("products_skus")
+    .select(
+      `price,
+      stock,
+      size:product_attributes!products_skus_size_attribute_id_fkey(value),
+      color:product_attributes!products_skus_color_attribute_id_fkey(value)
+    `
+    )
+    .eq("product_id", product.id);
+
+  if (!variants || variants.length === 0 || variantError) {
+    return notFound();
+  }
+
+  // Use the type guard to filter out invalid variants
+  const validVariants = variants.filter(isValidVariant);
+
+  if (validVariants.length === 0) {
     return notFound();
   }
 
@@ -54,33 +86,7 @@ export default async function ProductPage({
             <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>
             {product.description ? <p>{product.description}</p> : null}
           </div>
-          <form className="grid gap-4 md:gap-6">
-            <SizeVariant />
-            <ColorVariant />
-            <ProductPrice price={product.price} discountPercentage={0.2} />
-            <div className="flex gap-2">
-              <Button
-                variant="expandIcon"
-                Icon={ShoppingCartIcon}
-                iconPlacement="right"
-                type="button"
-                className="px-6 rounded-sm"
-              >
-                Adicionar ao carrinho
-              </Button>
-
-              <Button
-                variant="outline"
-                Icon={ShoppingCartIcon}
-                iconPlacement="right"
-                size="icon"
-                type="button"
-                className="rounded-sm"
-              >
-                <HeartIcon />
-              </Button>
-            </div>
-          </form>
+          <ProductForm productVariants={validVariants} />
         </div>
       </div>
     </div>

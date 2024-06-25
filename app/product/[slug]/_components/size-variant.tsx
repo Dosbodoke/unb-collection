@@ -4,7 +4,6 @@ import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 
 import { cn } from "@/utils/cn";
-import { Value } from "@radix-ui/react-select";
 import { Label } from "@/components/ui/label";
 
 const RadioGroup = React.forwardRef<
@@ -43,14 +42,34 @@ RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 export { RadioGroup, RadioGroupItem };
 
-export const SizeVariant = () => {
+export type Sizes = "P" | "M" | "G";
+
+export const SizeVariant = ({
+  sizes,
+  onValueChange,
+}: {
+  sizes: Set<Sizes>;
+  onValueChange: (value: Sizes) => void;
+}) => {
   return (
     <div className="flex flex-col gap-2">
       <Label className="text-base">Tamanho</Label>
-      <RadioGroup>
-        <RadioGroupItem className="flex-grow-0 px-3" value="P" />
-        <RadioGroupItem className="flex-grow-0 px-3" value="M" />
-        <RadioGroupItem className="flex-grow-0 px-3" value="G" />
+      <RadioGroup onValueChange={onValueChange}>
+        <RadioGroupItem
+          className="flex-grow-0 px-3"
+          value="P"
+          disabled={!sizes.has("P")}
+        />
+        <RadioGroupItem
+          className="flex-grow-0 px-3"
+          value="M"
+          disabled={!sizes.has("M")}
+        />
+        <RadioGroupItem
+          className="flex-grow-0 px-3"
+          value="G"
+          disabled={!sizes.has("G")}
+        />
       </RadioGroup>
     </div>
   );

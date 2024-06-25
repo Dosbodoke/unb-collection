@@ -107,6 +107,85 @@ export type Database = {
           },
         ]
       }
+      product_attributes: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          id: number
+          type: Database["public"]["Enums"]["product_attribute_type"] | null
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          id?: number
+          type?: Database["public"]["Enums"]["product_attribute_type"] | null
+          value: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          id?: number
+          type?: Database["public"]["Enums"]["product_attribute_type"] | null
+          value?: string
+        }
+        Relationships: []
+      }
+      products_skus: {
+        Row: {
+          color_attribute_id: number
+          created_at: string
+          deleted_at: string | null
+          id: number
+          price: number
+          product_id: number
+          size_attribute_id: number
+          stock: number
+        }
+        Insert: {
+          color_attribute_id: number
+          created_at?: string
+          deleted_at?: string | null
+          id?: number
+          price: number
+          product_id: number
+          size_attribute_id: number
+          stock?: number
+        }
+        Update: {
+          color_attribute_id?: number
+          created_at?: string
+          deleted_at?: string | null
+          id?: number
+          price?: number
+          product_id?: number
+          size_attribute_id?: number
+          stock?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_skus_color_attribute_id_fkey"
+            columns: ["color_attribute_id"]
+            isOneToOne: false
+            referencedRelation: "product_attributes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_skus_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_skus_size_attribute_id_fkey"
+            columns: ["size_attribute_id"]
+            isOneToOne: false
+            referencedRelation: "product_attributes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -115,7 +194,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      product_attribute_type: "color" | "size"
     }
     CompositeTypes: {
       [_ in never]: never

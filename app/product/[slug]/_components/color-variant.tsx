@@ -4,8 +4,8 @@ import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 
 import { cn } from "@/utils/cn";
-import { Value } from "@radix-ui/react-select";
 import { Label } from "@/components/ui/label";
+import { AnimatePresence, motion } from "framer-motion";
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
@@ -41,14 +41,42 @@ RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 export { RadioGroup, RadioGroupItem };
 
-export const ColorVariant = () => {
+export type Colors = "preto" | "verde" | "branco";
+
+const colorsHaxMapping = {
+  preto: "#000",
+  verde: "#1f611f",
+  branco: "#fff",
+};
+
+export const ColorVariant = ({
+  colors,
+  onValueChange,
+}: {
+  colors: Set<Colors>;
+  onValueChange: (value: Colors) => void;
+}) => {
   return (
     <div className="flex flex-col gap-2">
       <Label className="text-base">Cor</Label>
-      <RadioGroup>
-        <RadioGroupItem value="green" className="bg-green-400" />
-        <RadioGroupItem value="blue" className="bg-blue-400" />
-        <RadioGroupItem value="black" className="bg-black" />
+      <RadioGroup onValueChange={onValueChange}>
+        <AnimatePresence mode="popLayout">
+          {Array.from(colors).map((c) => (
+            <motion.div
+              key={c}
+              layout
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <RadioGroupItem
+                value={c}
+                style={{ backgroundColor: colorsHaxMapping[c] }}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </RadioGroup>
     </div>
   );
