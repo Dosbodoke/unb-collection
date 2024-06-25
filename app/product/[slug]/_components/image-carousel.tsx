@@ -33,7 +33,7 @@ const ImageCarousel = ({
       <CarouselPrevious className="left-2 z-50" />
       <CarouselContent className="m-0">
         {image_urls.map((url) => (
-          <CarouselItem key={`item-${url}`} className="bg-transparent p-0">
+          <CarouselItem key={`item-${url}`} className="bg-transparent">
             <Image
               src={url}
               alt={`Imagem de ${productName}`}
