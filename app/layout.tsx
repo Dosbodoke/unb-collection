@@ -36,7 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={GeistSans.className}>
-      <body className="bg-[#f6f6f6] text-foreground">
+      <body className="bg-[#efefef] text-foreground">
         <Navbar />
         {drawer}
         <main className="min-h-screen flex flex-col items-center pt-20">
