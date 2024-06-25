@@ -22,7 +22,7 @@ export const HeroSection = ({ items }: { items: string[] }) => {
       description: "Perfeiro para os dias de calor",
       href: "/product/cropped-manga-longa",
       cta: "Ver cropped",
-      imageUrl: items[1],
+      imageUrl: items[1] as string,
       className: "xl:col-start-4 xl:col-end-13 xl:row-start-7 xl:row-end-11",
     },
     {
@@ -30,7 +30,7 @@ export const HeroSection = ({ items }: { items: string[] }) => {
       description: "A primeira coleção da nossa loja",
       href: "#",
       cta: "Explorar coleção",
-      imageUrl: items[0],
+      imageUrl: items[0] as string,
       className: "xl:col-start-1 xl:col-end-13 xl:row-start-1 xl:row-end-7",
     },
   ];

@@ -1,8 +1,4 @@
-import Marquee from "@/components/magicui/marquee";
-
-import { UnbCollectionIcon, UnbInlineIcon } from "@/assets";
 import { ProductGrid } from "@/components/product-grid";
-import { HeroCarousel } from "./_components/hero-carousel";
 import DotPattern from "@/components/magicui/dot-pattern";
 import { cn } from "@/utils/cn";
 import SparklesText from "@/components/magicui/sparkles-text";
