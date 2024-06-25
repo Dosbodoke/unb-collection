@@ -14,17 +14,6 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
   const [selectedSize, setSelectedSize] = useState<Sizes>();
   const [selectedColor, setSelectedColor] = useState<Colors>();
 
-  const product =
-    productVariants.find((p) => {
-      if (selectedSize && selectedColor) {
-        return p.size.value === selectedSize && p.color.value === selectedColor;
-      }
-      if (selectedSize) {
-        return p;
-      }
-      return p;
-    }) || productVariants[0];
-
   const sizes = new Set(
     productVariants.map((product) => product.size?.value as Sizes)
   );
@@ -52,6 +41,19 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
 
     return colorsSet;
   }, [selectedSize]);
+
+  const product =
+    productVariants.find((p) => {
+      if (selectedSize && selectedColor) {
+        return p.size.value === selectedSize && p.color.value === selectedColor;
+      }
+      if (selectedSize) {
+        return p;
+      }
+      return p;
+    }) || productVariants[0];
+
+  if (!product) return null;
 
   const productInStock = product.stock !== 0;
 
