@@ -1,17 +1,16 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
 import type { Database } from "@/utils/supabase/database.types";
 import { useState, useEffect } from "react";
 
 interface CartItem {
   quantity: number;
-  product: Database["public"]["Tables"]["product"]["Row"];
+  product_sku: Database["public"]["Tables"]["products_skus"]["Row"] & {
+    product: Database["public"]["Tables"]["product"]["Row"];
+  };
 }
 
 const useCart = () => {
-  const supabase = createClient();
-
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // Load cart from local storage when the component mounts
@@ -33,7 +32,7 @@ const useCart = () => {
 
   const deleteFromCart = (productId: number) => {
     setCart((prevCart) =>
-      prevCart.filter((item) => item.product.id !== productId)
+      prevCart.filter((item) => item.product_sku.id !== productId)
     );
   };
 
