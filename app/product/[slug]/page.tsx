@@ -1,8 +1,10 @@
-import { ProductBreadcrumb } from "./_components/breadcrumb";
-import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
-import { ImageCarousel } from "./_components/image-carousel";
 
+import { createClient } from "@/utils/supabase/server";
+import type { Variant } from "@/hooks/use-cart";
+
+import { ProductBreadcrumb } from "./_components/breadcrumb";
+import { ImageCarousel } from "./_components/image-carousel";
 import { ProductForm } from "./_components/product-form";
 
 type Props = {
@@ -10,23 +12,12 @@ type Props = {
   searchParams: { [key: string]: string | undefined };
 };
 
-// Define the type for variants
-export type Variant = {
-  price: number;
-  stock: number;
-  size: { value: string };
-  color: { value: string };
-};
-
 // Type guard to ensure size and color are not null
 function isValidVariant(variant: any): variant is Variant {
   return variant.size !== null && variant.color !== null;
 }
 
-export default async function ProductPage({
-  params: { slug },
-  searchParams,
-}: Props) {
+export default async function ProductPage({ params: { slug } }: Props) {
   const supabase = createClient();
 
   const { data: product, error } = await supabase
@@ -42,10 +33,10 @@ export default async function ProductPage({
   const { data: variants, error: variantError } = await supabase
     .from("products_skus")
     .select(
-      `price,
-      stock,
+      `*,
       size:product_attributes!products_skus_size_attribute_id_fkey(value),
-      color:product_attributes!products_skus_color_attribute_id_fkey(value)
+      color:product_attributes!products_skus_color_attribute_id_fkey(value),
+      product:product!products_skus_product_id_fkey(*)
     `
     )
     .eq("product_id", product.id);

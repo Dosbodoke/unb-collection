@@ -9,13 +9,13 @@ import {
 } from "@/components/ui/drawer";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { TrashIcon } from "lucide-react";
-import useCart from "@/hooks/use-cart";
 import EmptySpaceSvg from "@/assets/empty-space.svg";
 import Image from "next/image";
+import { Item } from "./_components/item";
+import { useCartStore } from "@/stores/cart-store";
 
 export default function Carrinho() {
-  const { cart, deleteFromCart } = useCart();
+  const { cart, deleteFromCart } = useCartStore();
   const total = cart.reduce(
     (acc, item) => acc + item.product_sku.price * item.quantity,
     0
@@ -49,41 +49,46 @@ export default function Carrinho() {
           ) : (
             <ul className="grid gap-6">
               {cart.map((item) => (
-                <li
+                <Item
+                  item={item}
                   key={item.product_sku.id}
-                  className="grid grid-cols-[80px_1fr_80px] items-center gap-4"
-                >
-                  <img
-                    src="/placeholder.svg"
-                    alt={item.product_sku.product.name}
-                    width={80}
-                    height={80}
-                    className="rounded-md object-cover"
-                  />
-                  <div className="grid gap-1 items-center">
-                    <h3 className="font-medium">
-                      {item.product_sku.product.name}
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      R${item.product_sku.price.toFixed(2)} x {item.quantity}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-end gap-2">
-                    <p className="text-right font-medium">
-                      R${(item.product_sku.price * item.quantity).toFixed(2)}
-                    </p>
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => deleteFromCart(item.product_sku.id)}
-                    >
-                      <TrashIcon className="h-4 w-4" />
-                      <span className="sr-only">
-                        Remove {item.product_sku.product.name}
-                      </span>
-                    </Button>
-                  </div>
-                </li>
+                  removeFromCart={deleteFromCart}
+                />
+                // <li
+                //   key={item.product_sku.id}
+                //   className="grid grid-cols-[80px_1fr_80px] items-center gap-4"
+                // >
+                //   <img
+                //     src="/placeholder.svg"
+                //     alt={item.product_sku.product.name}
+                //     width={80}
+                //     height={80}
+                //     className="rounded-md object-cover"
+                //   />
+                //   <div className="grid gap-1 items-center">
+                //     <h3 className="font-medium">
+                //       {item.product_sku.product.name}
+                //     </h3>
+                //     <p className="text-sm text-gray-500 dark:text-gray-400">
+                //       R${item.product_sku.price.toFixed(2)} x {item.quantity}
+                //     </p>
+                //   </div>
+                //   <div className="flex flex-col items-end gap-2">
+                //     <p className="text-right font-medium">
+                //       R${(item.product_sku.price * item.quantity).toFixed(2)}
+                //     </p>
+                //     <Button
+                //       variant="destructive"
+                //       size="icon"
+                //       onClick={() => deleteFromCart(item.product_sku.id)}
+                //     >
+                //       <TrashIcon className="h-4 w-4" />
+                //       <span className="sr-only">
+                //         Remove {item.product_sku.product.name}
+                //       </span>
+                //     </Button>
+                //   </div>
+                // </li>
               ))}
             </ul>
           )}
