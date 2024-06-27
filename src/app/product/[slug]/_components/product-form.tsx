@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ProductPrice } from "./product-price";
 import { SizeVariant, type Sizes } from "./size-variant";
 import { ColorVariant, type Colors } from "./color-variant";
+import { ConfettiButton } from "@/components/magicui/confetti";
 
 const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
   const { addToCart } = useCartStore();
@@ -67,25 +68,18 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
         discountPercentage={variant.price > 55 ? 0.2 : 0}
       />
       <div className="flex gap-2">
-        <Button
-          variant="expandIcon"
+        <ConfettiButton
+          variant="default"
           Icon={ShoppingCartIcon}
           iconPlacement="right"
           type="button"
-          className="px-6"
           disabled={!productInStock}
           onClick={() => addToCart({ ...variant })}
+          className="px-6"
         >
           {productInStock ? "Adicionar ao carrinho" : "Fora de estoque"}
-        </Button>
-
-        <Button
-          variant="outline"
-          Icon={ShoppingCartIcon}
-          iconPlacement="right"
-          size="icon"
-          type="button"
-        >
+        </ConfettiButton>
+        <Button variant="outline" size="icon" type="button">
           <HeartIcon />
         </Button>
       </div>
