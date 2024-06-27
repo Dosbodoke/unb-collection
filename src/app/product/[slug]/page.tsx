@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
-import type { Variant } from "@/hooks/use-cart";
+import type { Variant } from "@/stores/cart-store";
 
 import { ProductBreadcrumb } from "./_components/breadcrumb";
 import { ImageCarousel } from "./_components/image-carousel";

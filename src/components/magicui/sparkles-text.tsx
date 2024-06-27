@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/cn";
 import { motion } from "framer-motion";
-import { CSSProperties, ReactElement, useEffect, useState } from "react";
+import { type CSSProperties, type ReactElement, useEffect, useState } from "react";
 
 interface Sparkle {
   id: string;
@@ -137,7 +137,7 @@ const Sparkle: React.FC<Sparkle> = ({ id, x, y, color, delay, scale }) => {
         scale: [0, scale, 0],
         rotate: [75, 120, 150],
       }}
-      transition={{ duration: 1.4, repeat: Infinity, delay }}
+      transition={{ duration: 1.4, repeat: Number.POSITIVE_INFINITY, delay }}
       width="21"
       height="21"
       viewBox="0 0 21 21"

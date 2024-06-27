@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SVGProps } from "react";
+import type { SVGProps } from "react";
 
 export const WhatsAppIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -20,6 +20,7 @@ export const UnbCollectionIcon = (props: SVGProps<SVGSVGElement>) => (
     width={42}
     height={39}
     fill="none"
+    aria-label="Logo da marca"
     {...props}
   >
     <path
@@ -36,6 +37,7 @@ export const UnbInlineIcon = (props: SVGProps<SVGSVGElement>) => (
     width={75}
     height={37}
     fill="none"
+    aria-label="Logo da UNB"
     {...props}
   >
     <g clipPath="url(#a)">

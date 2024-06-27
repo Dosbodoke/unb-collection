@@ -1,14 +1,10 @@
 "use client";
 
-import { PlusIcon, MinusIcon, Trash2Icon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 
-import type { CartItem } from "@/context/cart-context";
+import type { CartItem } from "@/stores/cart-store";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
-
-const CartList = () => {};
 
 interface ItemProps {
   item: CartItem;
@@ -20,17 +16,19 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
 
   return (
     <li className="flex flex-row gap-4">
-      <img
-        src={
-          supabase.storage
-            .from("products")
-            .getPublicUrl(item.product_sku.product.cover).data.publicUrl
-        }
-        alt={item.product_sku.product.name}
-        width={80}
-        height={80}
-        className="rounded-md object-cover"
-      />
+      {item.product_sku.product.cover ? (
+        <img
+          src={
+            supabase.storage
+              .from("products")
+              .getPublicUrl(item.product_sku.product.cover).data.publicUrl
+          }
+          alt={item.product_sku.product.name}
+          width={80}
+          height={80}
+          className="rounded-md object-cover"
+        />
+      ) : null}
       <div className="items-center flex-1">
         <h3 className="font-medium">{item.product_sku.product.name}</h3>
       </div>

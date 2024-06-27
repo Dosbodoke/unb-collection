@@ -3,7 +3,7 @@ import "./globals.css";
 import { Navbar } from "@/components/globals/navbar";
 import { WhatsAppButton } from "@/components/globals/whatsapp";
 import { Footer } from "@/components/globals/footer";
-import { type Metadata } from "next";
+import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 
 const defaultUrl = process.env.VERCEL_URL

@@ -1,5 +1,8 @@
 "use client";
 
+import Autoplay from "embla-carousel-autoplay";
+import Image from "next/image";
+
 import {
   Carousel,
   CarouselContent,
@@ -9,9 +12,6 @@ import {
   CarouselThumbsContainer,
   CarouselIndicator,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-
-import Image from "next/image";
 
 const HeroCarousel = ({ items }: { items: string[] }) => {
   return (

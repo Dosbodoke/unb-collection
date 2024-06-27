@@ -35,10 +35,10 @@ const ProductGrid = async () => {
                     .data.publicUrl
                 }
                 back={
-                  product.images && product.images.length > 0
+                  product.images && product.images[0]
                     ? supabase.storage
                         .from("products")
-                        .getPublicUrl(product.images[0]!).data.publicUrl
+                        .getPublicUrl(product.images[0]).data.publicUrl
                     : null
                 }
                 productName={product.name}

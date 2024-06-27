@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 const BentoGrid = ({
   children,
