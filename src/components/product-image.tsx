@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 
 const ImageWithHover = ({
@@ -12,23 +9,16 @@ const ImageWithHover = ({
   cover: string;
   back: string | null;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <div
-      className="w-full relative"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={() => setIsHovered(true)}
-      onTouchEnd={() => setIsHovered(false)}
-    >
-      <div className="relative w-full aspect-[9/16] max-w-md">
+    <div className="w-full relative">
+      <div
+        className="relative w-full aspect-[9/16] max-w-md group"
+        data-back={!!back}
+      >
         <Image
           src={cover}
           alt={`${productName} cover image`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-            isHovered && back ? "opacity-0" : "opacity-100"
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-data-[back=true]:hover:opacity-0`}
           width={375}
           height={437}
           priority={true}
@@ -37,9 +27,7 @@ const ImageWithHover = ({
           <Image
             src={back}
             alt={`${productName} back image`}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-              isHovered ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-data-[back=true]:hover:opacity-100`}
             width={375}
             height={437}
             priority={true}
