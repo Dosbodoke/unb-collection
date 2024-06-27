@@ -22,6 +22,8 @@ export default function Carrinho() {
   );
   const router = useRouter();
 
+  const cartIsEmpty = cart.length === 0;
+
   return (
     <Drawer
       open={true}
@@ -35,7 +37,7 @@ export default function Carrinho() {
           <DrawerTitle>Seu carrinho</DrawerTitle>
         </DrawerHeader>
         <div className="flex-1 overflow-y-auto px-4 py-6">
-          {cart.length === 0 ? (
+          {cartIsEmpty ? (
             <div className="gap-6 h-full w-full flex flex-col justify-center">
               <Image
                 priority
@@ -64,7 +66,9 @@ export default function Carrinho() {
               <p className="text-gray-500 dark:text-gray-400">total</p>
               <p className="font-medium">R${total.toFixed(2)}</p>
             </div>
-            <Button size="lg">Comprar</Button>
+            <Button size="lg" type="button" disabled={cartIsEmpty}>
+              Finalizar compra
+            </Button>
           </div>
         </DrawerFooter>
       </DrawerContent>
