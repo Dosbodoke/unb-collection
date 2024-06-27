@@ -22,7 +22,7 @@ const ImageWithHover = ({
       onTouchStart={() => setIsHovered(true)}
       onTouchEnd={() => setIsHovered(false)}
     >
-      <div className="relative w-full h-[437px] max-w-md">
+      <div className="relative w-full aspect-[9/16] max-w-md">
         <Image
           src={cover}
           alt={`${productName} cover image`}
