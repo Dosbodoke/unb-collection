@@ -868,11 +868,6 @@ embla-carousel-autoplay@^8.1.5:
   resolved "https://registry.yarnpkg.com/embla-carousel-autoplay/-/embla-carousel-autoplay-8.1.5.tgz#88451b5db9be460889d039e692cf69f5234212d0"
   integrity sha512-9pHIezRqiO9yism7wRFwmM1j/W9c9hBNX4hq3F4aTPbK84M0M57ryG8QUwhbsTGJbDoBBVTm//YEd0T6i/5YgA==
 
-embla-carousel-fade@^8.1.5:
-  version "8.1.5"
-  resolved "https://registry.yarnpkg.com/embla-carousel-fade/-/embla-carousel-fade-8.1.5.tgz#1e230207a5e52494e65785daa038c5aa47ac957f"
-  integrity sha512-nNueY2OSJphU5X6JIaEOFoCBNySLK9VouD49QaKfj2/N7dbeNPSqp+JvZBnNcrmtscyXV7MNUyq2b+I1Oho1qQ==
-
 embla-carousel-react@^8.1.5:
   version "8.1.5"
   resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-8.1.5.tgz#64867a2812c0c5beb7fe215651ce1f8d9f4855d5"
