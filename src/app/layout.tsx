@@ -7,6 +7,7 @@ import "./globals.css";
 import { Navbar } from "@/components/globals/navbar";
 import { WhatsAppButton } from "@/components/globals/whatsapp";
 import { Footer } from "@/components/globals/footer";
+import DotPattern from "@/components/magicui/dot-pattern";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -41,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={GeistSans.className}>
-      <body className="bg-[#efefef] text-foreground">
+      <body className="bg-[#efefef] text-foreground relative">
         <Navbar />
         {drawer}
         <main className="min-h-screen flex flex-col items-center pt-20">
