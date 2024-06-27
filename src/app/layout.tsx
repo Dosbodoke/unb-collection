@@ -1,10 +1,12 @@
+import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
+import { Analytics } from "@vercel/analytics/react";
+
 import "./globals.css";
+
 import { Navbar } from "@/components/globals/navbar";
 import { WhatsAppButton } from "@/components/globals/whatsapp";
 import { Footer } from "@/components/globals/footer";
-import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -16,8 +18,6 @@ export const metadata: Metadata = {
   description:
     "Trazemos o streetwear para o campus da Universidade de Brasília",
   metadataBase: new URL(defaultUrl),
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#000000",
   keywords:
     "UNB Collection, streetwear, Universidade de Brasília, moda, campus, e-commerce, shopping, roupas, estudantes",
   robots: {
