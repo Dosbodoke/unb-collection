@@ -29,13 +29,20 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
           className="rounded-md object-cover"
         />
       ) : null}
-      <div className="items-center flex-1">
+      <div className="flex-1 flex flex-col gap-2">
         <h3 className="font-medium">{item.product_sku.product.name}</h3>
+        <div>
+          {item.quantity !== 1 ? (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              R${item.product_sku.price.toFixed(2)} x {item.quantity}
+            </p>
+          ) : null}
+          <p className="font-medium">
+            ${(item.product_sku.price * item.quantity).toFixed(2)}
+          </p>
+        </div>
       </div>
-      <div className="flex flex-col items-end gap-2">
-        <p className="text-right font-medium">
-          ${(item.product_sku.price * item.quantity).toFixed(2)}
-        </p>
+      <div className="flex flex-col justify-center">
         <Button
           variant="destructive"
           size="icon"
