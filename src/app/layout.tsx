@@ -16,14 +16,19 @@ export const metadata: Metadata = {
   description:
     "Trazemos o streetwear para o campus da Universidade de Brasília",
   metadataBase: new URL(defaultUrl),
+  viewport: "width=device-width, initial-scale=1",
+  themeColor: "#000000",
+  keywords:
+    "UNB Collection, streetwear, Universidade de Brasília, moda, campus, e-commerce, shopping, roupas, estudantes",
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
     type: "website",
+    siteName: "UNB Collection",
+    locale: "pt-BR",
     url: `${defaultUrl}`,
-    images: `${defaultUrl}/img/supabase-og-image.png`,
   },
 };
 
