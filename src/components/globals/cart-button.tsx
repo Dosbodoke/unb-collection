@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 const CartButton = () => {
-  const cart = useCartStore((state) => state.cart);
-  const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+  const { totalQuantity } = useCartStore();
 
   return (
     <Button asChild variant="link" className="relative">

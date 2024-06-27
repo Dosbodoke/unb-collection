@@ -1,6 +1,7 @@
 "use client";
 
 import { Trash2Icon } from "lucide-react";
+import { motion } from "framer-motion";
 
 import type { CartItem } from "@/stores/cart-store";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,15 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
   const supabase = createClient();
 
   return (
-    <li className="flex flex-row gap-4">
+    <motion.li
+      key={item.product_sku.id}
+      layout
+      initial={{ opacity: 0, x: -400, scale: 0.5 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      exit={{ opacity: 0, x: 200, scale: 1.2 }}
+      transition={{ duration: 0.6, type: "spring" }}
+      className="flex flex-row gap-4"
+    >
       {item.product_sku.product.cover ? (
         <img
           src={
@@ -29,7 +38,7 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
           className="rounded-md object-cover"
         />
       ) : null}
-      <div className="flex-1 flex flex-col gap-2">
+      <div className="flex-1 flex flex-col gap-1">
         <h3 className="font-medium">{item.product_sku.product.name}</h3>
         <div>
           {item.quantity !== 1 ? (
@@ -54,7 +63,7 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
           </span>
         </Button>
       </div>
-    </li>
+    </motion.li>
   );
 };
 

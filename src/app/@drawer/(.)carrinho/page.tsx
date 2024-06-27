@@ -13,14 +13,11 @@ import EmptySpaceSvg from "@/assets/empty-space.svg";
 import Image from "next/image";
 import { Item } from "./_components/item";
 import { useCartStore } from "@/stores/cart-store";
+import { AnimatePresence } from "framer-motion";
 
 export default function Carrinho() {
-  const { cart, deleteFromCart } = useCartStore();
-  const total = cart.reduce(
-    (acc, item) => acc + item.product_sku.price * item.quantity,
-    0
-  );
   const router = useRouter();
+  const { cart, deleteFromCart, totalValue } = useCartStore();
 
   const cartIsEmpty = cart.length === 0;
 
@@ -49,14 +46,16 @@ export default function Carrinho() {
               </h2>
             </div>
           ) : (
-            <ul className="grid gap-6">
-              {cart.map((item) => (
-                <Item
-                  item={item}
-                  key={item.product_sku.id}
-                  removeFromCart={deleteFromCart}
-                />
-              ))}
+            <ul className="grid gap-6 overflow-hidden">
+              <AnimatePresence mode="popLayout">
+                {cart.map((item) => (
+                  <Item
+                    item={item}
+                    key={item.product_sku.id}
+                    removeFromCart={deleteFromCart}
+                  />
+                ))}
+              </AnimatePresence>
             </ul>
           )}
         </div>
@@ -64,7 +63,7 @@ export default function Carrinho() {
           <div className="grid gap-2">
             <div className="flex items-center justify-between">
               <p className="text-gray-500 dark:text-gray-400">total</p>
-              <p className="font-medium">R${total.toFixed(2)}</p>
+              <p className="font-medium">R${totalValue.toFixed(2)}</p>
             </div>
             <Button size="lg" type="button" disabled={cartIsEmpty}>
               Finalizar compra

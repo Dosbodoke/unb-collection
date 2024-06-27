@@ -16,38 +16,62 @@ export interface CartItem {
 
 interface CartState {
   cart: CartItem[];
+  totalQuantity: number;
+  totalValue: number;
   addToCart: (sku: CartItem["product_sku"]) => void;
   deleteFromCart: (productId: number) => void;
+}
+
+function calculateCartTotals(cart: CartItem[]) {
+  return cart.reduce(
+    (acc, item) => {
+      acc.totalQuantity += item.quantity;
+      acc.totalValue += item.product_sku.price * item.quantity;
+      return acc;
+    },
+    { totalQuantity: 0, totalValue: 0 }
+  );
 }
 
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       cart: [],
+      totalQuantity: 0,
+      totalValue: 0,
       addToCart: (sku) =>
         set((state) => {
           const existingItemIndex = state.cart.findIndex(
             (item) => item.product_sku.id === sku.id
           );
 
+          let updatedCart;
           if (existingItemIndex === -1) {
-            return { cart: [...state.cart, { quantity: 1, product_sku: sku }] };
+            updatedCart = [...state.cart, { quantity: 1, product_sku: sku }];
+          } else {
+            updatedCart = [...state.cart];
+            const existingItem = updatedCart[existingItemIndex];
+            if (existingItem) {
+              updatedCart[existingItemIndex] = {
+                ...existingItem,
+                quantity: existingItem.quantity + 1,
+              };
+            }
           }
 
-          const updatedCart = [...state.cart];
-          const existingItem = updatedCart[existingItemIndex];
-          if (existingItem) {
-            updatedCart[existingItemIndex] = {
-              ...existingItem,
-              quantity: existingItem.quantity + 1,
-            };
-          }
-          return { cart: updatedCart };
+          const { totalQuantity, totalValue } =
+            calculateCartTotals(updatedCart);
+          return { cart: updatedCart, totalQuantity, totalValue };
         }),
       deleteFromCart: (productId) =>
-        set((state) => ({
-          cart: state.cart.filter((item) => item.product_sku.id !== productId),
-        })),
+        set((state) => {
+          const updatedCart = state.cart.filter(
+            (item) => item.product_sku.id !== productId
+          );
+          const { totalQuantity, totalValue } =
+            calculateCartTotals(updatedCart);
+          return { cart: updatedCart, totalQuantity, totalValue };
+        }),
     }),
     {
       name: "cart-storage", // name of the item in the storage (must be unique)
