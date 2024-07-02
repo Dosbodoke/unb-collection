@@ -26,7 +26,9 @@ export default function Carrinho() {
       open={true}
       direction="right"
       onOpenChange={(open) => {
-        if (!open) router.back();
+        if (!open) {
+          router.back();
+        }
       }}
     >
       <DrawerContent className="bg-white flex flex-col rounded-tr-none rounded-l-[10px] h-full w-full max-w-80 md:max-w-96 mt-24 fixed bottom-0 right-0 left-auto">
