@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { Analytics } from "@vercel/analytics/react";
+import Script from "next/script";
 
 import "./globals.css";
 
 import { Navbar } from "@/components/globals/navbar";
 import { WhatsAppButton } from "@/components/globals/whatsapp";
 import { Footer } from "@/components/globals/footer";
-import DotPattern from "@/components/magicui/dot-pattern";
+import AutoLogin from "@/components/auth/auto-login";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -36,22 +37,25 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
   drawer,
+  modal,
 }: {
   children: React.ReactNode;
   drawer: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="pt-BR" className={GeistSans.className}>
       <body className="bg-[#efefef] text-foreground relative">
-        <Navbar />
         {drawer}
-        <main className="min-h-screen flex flex-col items-center pt-20">
-          {children}
-          <Analytics />
-        </main>
+        {modal}
+        <Navbar />
+        <main className="min-h-[90vh] flex flex-col">{children}</main>
         <WhatsAppButton />
         <Footer />
+        <AutoLogin />
       </body>
+      <Analytics />
+      <Script src="https://accounts.google.com/gsi/client" async />
     </html>
   );
 }

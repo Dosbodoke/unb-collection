@@ -1,11 +1,16 @@
-import { UnbCollectionIcon } from "@/assets";
 import { MenuIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React from "react";
-import { CartButton } from "./cart-button";
 
-const Navbar = () => {
+import { UnbCollectionIcon } from "@/assets";
+import { createClient } from "@/utils/supabase/server";
+import { Button } from "@/components/ui/button";
+import { CartButton } from "./cart-button";
+import UserDropdown from "../auth/user-dropdown";
+
+const Navbar = async () => {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+
   return (
     <nav className="fixed inset-x-2 top-2 z-50 mx-auto items-center justify-between flex max-w-6xl overflow-hidden rounded-xl backdrop-blur-sm bg-white/80 p-3 h-16">
       <Link href="/">
@@ -13,6 +18,7 @@ const Navbar = () => {
       </Link>
       <div className="flex gap-4 items-center">
         <CartButton />
+        <UserDropdown user={data.user} />
         <Button variant="outline" size="icon">
           <MenuIcon className="h-6 w-6" />
         </Button>
