@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
+import { toast } from "sonner";
 
 export default function UserDropdown({ user }: { user: User | null }) {
   const supabase = createClient();
@@ -22,17 +23,22 @@ export default function UserDropdown({ user }: { user: User | null }) {
 
   const handleSignOut = async () => {
     setLoading(true);
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      toast.error("Até a proxima", { icon: "👋" });
+    }
     setLoading(false);
     router.refresh();
   };
 
   if (!user) {
-    <Button type="button" variant="ghost" size="icon" asChild>
-      <Link href="/login">
-        <User2Icon />
-      </Link>
-    </Button>;
+    return (
+      <Button type="button" variant="ghost" size="icon" asChild>
+        <Link href="/login">
+          <User2Icon />
+        </Link>
+      </Button>
+    );
   }
 
   return (

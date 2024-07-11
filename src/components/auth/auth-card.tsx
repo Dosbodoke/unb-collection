@@ -27,6 +27,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
+import { toast } from "sonner";
 
 const MotionButton = motion(Button);
 
@@ -54,12 +55,14 @@ const OrWithGoogle = () => {
   const supabase = createClient();
 
   async function loginWithGoogle() {
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${location.origin}/auth/callback?redirect_to=${location.href}`,
       },
     });
+
+    if (!error) toast.success("Login realizado", { icon: "🔑" });
   }
 
   return (
@@ -144,6 +147,7 @@ const LoginCard = ({
 
     if (res.success) {
       form.reset();
+      toast.success("Login realizado", { icon: "🔑" });
       if (onSuccess) {
         onSuccess();
       }
@@ -275,6 +279,7 @@ export const SignupCard = ({
 
     if (res.success) {
       form.reset();
+      toast.error("Conta criada", { icon: "🎉" });
       setMode("login");
     }
 

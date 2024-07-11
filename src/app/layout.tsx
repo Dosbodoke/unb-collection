@@ -9,6 +9,7 @@ import { Navbar } from "@/components/globals/navbar";
 import { WhatsAppButton } from "@/components/globals/whatsapp";
 import { Footer } from "@/components/globals/footer";
 import AutoLogin from "@/components/auth/auto-login";
+import { Toaster } from "@/components/ui/sonner";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -53,6 +54,7 @@ export default function RootLayout({
         <WhatsAppButton />
         <Footer />
         <AutoLogin />
+        <Toaster richColors theme="light" />
       </body>
       <Analytics />
       <Script src="https://accounts.google.com/gsi/client" async />
