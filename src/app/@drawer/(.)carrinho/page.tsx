@@ -4,7 +4,6 @@ import { AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import EmptySpaceSvg from '@/assets/empty-space.svg';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -16,6 +15,7 @@ import {
 import { useCartStore } from '@/stores/cart-store';
 
 import { Item } from './_components/item';
+import Link from 'next/link';
 
 export default function Carrinho() {
   const router = useRouter();
@@ -36,12 +36,27 @@ export default function Carrinho() {
       <DrawerContent className="bg-white flex flex-col rounded-tr-none rounded-l-[10px] h-full w-full max-w-80 md:max-w-96 mt-24 fixed bottom-0 right-0 left-auto">
         <DrawerHeader>
           <DrawerTitle>Seu carrinho</DrawerTitle>
+          <div className="w-full h-px bg-muted shadow-sm" />
         </DrawerHeader>
         <div className="flex-1 overflow-y-auto px-4 py-6">
           {cartIsEmpty ? (
-            <div className="gap-6 h-full w-full flex flex-col justify-center">
-              <Image priority src={EmptySpaceSvg} alt="Ilustração para carrinho vazio" />
-              <h2 className="text-center text-muted-foreground">Seu carrinho está vazio</h2>
+            <div className="gap-4 h-full w-full flex flex-col justify-center">
+              <Image
+                priority
+                width={256}
+                height={256}
+                src="/empty-shopping-bag.webp"
+                alt="Ilustração para sacola vazio"
+                className="mx-auto"
+              />
+              <div className="flex items-center flex-col">
+                <h2 className="text-center text-xl text-muted-foreground">
+                  Seu carrinho está vazio
+                </h2>
+                <Button className="text-center" variant="link" asChild>
+                  <Link href="/products">Explorar produtos</Link>
+                </Button>
+              </div>
             </div>
           ) : (
             <ul className="grid gap-6 overflow-hidden">
