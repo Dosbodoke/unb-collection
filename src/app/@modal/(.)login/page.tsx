@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { AuthCard } from "@/components/auth/auth-card";
+import { AuthCard } from '@/components/auth/auth-card';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 export default function Component() {
   const router = useRouter();

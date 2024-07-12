@@ -1,13 +1,14 @@
-import { AuthCard } from "@/components/auth/auth-card";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
+
+import { AuthCard } from '@/components/auth/auth-card';
+import { createClient } from '@/utils/supabase/server';
 
 export default async function LoginPage() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
 
   if (data.user) {
-    redirect("/");
+    redirect('/');
   }
 
   return (

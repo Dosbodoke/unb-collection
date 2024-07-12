@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import { AnimatePresence, motion } from 'framer-motion';
+import * as React from 'react';
 
-import { cn } from "@/utils/cn";
-import { Label } from "@/components/ui/label";
-import { AnimatePresence, motion } from "framer-motion";
+import { Label } from '@/components/ui/label';
+import { cn } from '@/utils/cn';
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
@@ -13,7 +13,7 @@ const RadioGroup = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <RadioGroupPrimitive.Root
-      className={cn("flex flex-wrap gap-2", className)}
+      className={cn('flex flex-wrap gap-2', className)}
       {...props}
       ref={ref}
     />
@@ -29,8 +29,8 @@ const RadioGroupItem = React.forwardRef<
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        "border-[#e5e7eb] text-sm font-light bg-transparent border-2 data-[state=checked]:border-[#3b82f6] h-8 w-8 rounded-full hover:shadow-xl transition-shadow ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed",
-        className
+        'border-[#e5e7eb] text-sm font-light bg-transparent border-2 data-[state=checked]:border-[#3b82f6] h-8 w-8 rounded-full hover:shadow-xl transition-shadow ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed',
+        className,
       )}
       value={value}
       {...props}
@@ -41,12 +41,12 @@ RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 export { RadioGroup, RadioGroupItem };
 
-export type Colors = "preto" | "verde" | "branco";
+export type Colors = 'preto' | 'verde' | 'branco';
 
 const colorsHaxMapping = {
-  preto: "#000",
-  verde: "#1f611f",
-  branco: "#fff",
+  preto: '#000',
+  verde: '#1f611f',
+  branco: '#fff',
 };
 
 export const ColorVariant = ({
@@ -68,12 +68,9 @@ export const ColorVariant = ({
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.7, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
             >
-              <RadioGroupItem
-                value={c}
-                style={{ backgroundColor: colorsHaxMapping[c] }}
-              />
+              <RadioGroupItem value={c} style={{ backgroundColor: colorsHaxMapping[c] }} />
             </motion.div>
           ))}
         </AnimatePresence>

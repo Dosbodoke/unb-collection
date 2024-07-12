@@ -1,12 +1,13 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import type { Database } from "@/utils/supabase/database.types";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+import type { Database } from '@/utils/supabase/database.types';
 
 // Define the type for variants
-export type Variant = Database["public"]["Tables"]["products_skus"]["Row"] & {
+export type Variant = Database['public']['Tables']['products_skus']['Row'] & {
   size: { value: string };
   color: { value: string };
-  product: Database["public"]["Tables"]["product"]["Row"];
+  product: Database['public']['Tables']['product']['Row'];
 };
 
 export interface CartItem {
@@ -18,7 +19,7 @@ interface CartState {
   cart: CartItem[];
   totalQuantity: number;
   totalValue: number;
-  addToCart: (sku: CartItem["product_sku"]) => void;
+  addToCart: (sku: CartItem['product_sku']) => void;
   deleteFromCart: (productId: number) => void;
 }
 
@@ -29,7 +30,7 @@ function calculateCartTotals(cart: CartItem[]) {
       acc.totalValue += item.product_sku.price * item.quantity;
       return acc;
     },
-    { totalQuantity: 0, totalValue: 0 }
+    { totalQuantity: 0, totalValue: 0 },
   );
 }
 
@@ -41,9 +42,7 @@ export const useCartStore = create<CartState>()(
       totalValue: 0,
       addToCart: (sku) =>
         set((state) => {
-          const existingItemIndex = state.cart.findIndex(
-            (item) => item.product_sku.id === sku.id
-          );
+          const existingItemIndex = state.cart.findIndex((item) => item.product_sku.id === sku.id);
 
           let updatedCart;
           if (existingItemIndex === -1) {
@@ -59,22 +58,18 @@ export const useCartStore = create<CartState>()(
             }
           }
 
-          const { totalQuantity, totalValue } =
-            calculateCartTotals(updatedCart);
+          const { totalQuantity, totalValue } = calculateCartTotals(updatedCart);
           return { cart: updatedCart, totalQuantity, totalValue };
         }),
       deleteFromCart: (productId) =>
         set((state) => {
-          const updatedCart = state.cart.filter(
-            (item) => item.product_sku.id !== productId
-          );
-          const { totalQuantity, totalValue } =
-            calculateCartTotals(updatedCart);
+          const updatedCart = state.cart.filter((item) => item.product_sku.id !== productId);
+          const { totalQuantity, totalValue } = calculateCartTotals(updatedCart);
           return { cart: updatedCart, totalQuantity, totalValue };
         }),
     }),
     {
-      name: "cart-storage", // name of the item in the storage (must be unique)
-    }
-  )
+      name: 'cart-storage', // name of the item in the storage (must be unique)
+    },
+  ),
 );

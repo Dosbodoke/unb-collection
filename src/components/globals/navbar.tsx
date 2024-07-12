@@ -1,11 +1,12 @@
-import { MenuIcon } from "lucide-react";
-import Link from "next/link";
+import { MenuIcon } from 'lucide-react';
+import Link from 'next/link';
 
-import { UnbCollectionIcon } from "@/assets";
-import { createClient } from "@/utils/supabase/server";
-import { Button } from "@/components/ui/button";
-import { CartButton } from "./cart-button";
-import UserDropdown from "../auth/user-dropdown";
+import { UnbCollectionIcon } from '@/assets';
+import { Button } from '@/components/ui/button';
+import { createClient } from '@/utils/supabase/server';
+
+import UserDropdown from '../auth/user-dropdown';
+import { CartButton } from './cart-button';
 
 const Navbar = async () => {
   const supabase = createClient();

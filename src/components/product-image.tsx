@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 const ImageWithHover = ({
   productName,
@@ -11,10 +11,7 @@ const ImageWithHover = ({
 }) => {
   return (
     <div className="w-full relative">
-      <div
-        className="relative w-full aspect-[9/16] max-w-md group"
-        data-back={!!back}
-      >
+      <div className="relative w-full aspect-[9/16] max-w-md group" data-back={!!back}>
         <Image
           src={cover}
           alt={`${productName} cover image`}

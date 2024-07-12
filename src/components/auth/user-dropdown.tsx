@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { User } from "@supabase/supabase-js";
-import { LoaderCircleIcon, LogOutIcon, User2Icon } from "lucide-react";
+import { User } from '@supabase/supabase-js';
+import { LoaderCircleIcon, LogOutIcon, User2Icon } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/client";
-import { toast } from "sonner";
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { createClient } from '@/utils/supabase/client';
 
 export default function UserDropdown({ user }: { user: User | null }) {
   const supabase = createClient();
@@ -25,7 +25,7 @@ export default function UserDropdown({ user }: { user: User | null }) {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      toast.error("Até a proxima", { icon: "👋" });
+      toast.error('Até a proxima', { icon: '👋' });
     }
     setLoading(false);
     router.refresh();

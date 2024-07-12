@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
+import Image from 'next/image';
+import React from 'react';
+
+import { UnbCollectionIcon } from '@/assets';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-
-import React from "react";
-import { UnbCollectionIcon } from "@/assets";
-import Image from "next/image";
+} from '@/components/ui/carousel';
 
 const ImageCarousel = ({
   image_urls = [],

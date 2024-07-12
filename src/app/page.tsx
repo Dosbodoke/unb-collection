@@ -1,18 +1,17 @@
-import { ProductGrid } from "@/components/product-grid";
-import DotPattern from "@/components/magicui/dot-pattern";
-import SparklesText from "@/components/magicui/sparkles-text";
+import DotPattern from '@/components/magicui/dot-pattern';
+import SparklesText from '@/components/magicui/sparkles-text';
+import { ProductGrid } from '@/components/product-grid';
+import { createClient } from '@/utils/supabase/server';
 
-import { createClient } from "@/utils/supabase/server";
-import { HeroSection } from "./_components/hero-section";
+import { HeroSection } from './_components/hero-section';
 
 export default async function Index() {
   const supabase = createClient();
 
-  const promoList = await supabase.storage.from("promo").list();
+  const promoList = await supabase.storage.from('promo').list();
   const urls =
     promoList.data?.map(
-      (file) =>
-        supabase.storage.from("promo").getPublicUrl(file.name).data.publicUrl
+      (file) => supabase.storage.from('promo').getPublicUrl(file.name).data.publicUrl,
     ) || [];
 
   return (
@@ -22,8 +21,8 @@ export default async function Index() {
         className="text-center py-8"
         text="Destaques"
         colors={{
-          first: "#ff2975 ",
-          second: "#8c1eff",
+          first: '#ff2975 ',
+          second: '#8c1eff',
         }}
         sparklesCount={6}
       />

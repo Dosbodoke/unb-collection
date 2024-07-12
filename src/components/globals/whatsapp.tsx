@@ -1,7 +1,7 @@
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
-import { WhatsAppIcon } from "@/assets";
-import Link from "next/link";
+import { WhatsAppIcon } from '@/assets';
 
 export const WhatsAppButton = () => {
   return (

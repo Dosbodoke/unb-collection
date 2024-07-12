@@ -1,24 +1,22 @@
-"use client";
+'use client';
 
-import React, { useMemo, useState } from "react";
-import { HeartIcon, ShoppingCartIcon } from "lucide-react";
+import { HeartIcon, ShoppingCartIcon } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
 
-import { useCartStore, type Variant } from "@/stores/cart-store";
-import { Button } from "@/components/ui/button";
+import { ConfettiButton } from '@/components/magicui/confetti';
+import { Button } from '@/components/ui/button';
+import { useCartStore, type Variant } from '@/stores/cart-store';
 
-import { ProductPrice } from "./product-price";
-import { SizeVariant, type Sizes } from "./size-variant";
-import { ColorVariant, type Colors } from "./color-variant";
-import { ConfettiButton } from "@/components/magicui/confetti";
+import { type Colors, ColorVariant } from './color-variant';
+import { ProductPrice } from './product-price';
+import { type Sizes, SizeVariant } from './size-variant';
 
 const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
   const { addToCart } = useCartStore();
   const [selectedSize, setSelectedSize] = useState<Sizes>();
   const [selectedColor, setSelectedColor] = useState<Colors>();
 
-  const sizes = new Set(
-    productVariants.map((product) => product.size?.value as Sizes)
-  );
+  const sizes = new Set(productVariants.map((product) => product.size?.value as Sizes));
 
   function handleChangeSize(value: Sizes) {
     setSelectedSize(value);
@@ -34,7 +32,7 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
 
     if (selectedSize) {
       const variantsWithSize = productVariants.filter(
-        (product) => product.size?.value === selectedSize
+        (product) => product.size?.value === selectedSize,
       );
       variantsWithSize.forEach((v) => colorsSet.add(v.color.value as Colors));
     } else {
@@ -63,10 +61,7 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
     <form className="grid gap-4 md:gap-6">
       <SizeVariant sizes={sizes} onValueChange={handleChangeSize} />
       <ColorVariant colors={colors} onValueChange={handleChangeColor} />
-      <ProductPrice
-        price={variant.price}
-        discountPercentage={variant.price > 55 ? 0.2 : 0}
-      />
+      <ProductPrice price={variant.price} discountPercentage={variant.price > 55 ? 0.2 : 0} />
       <div className="flex gap-2">
         <ConfettiButton
           variant="default"
@@ -77,7 +72,7 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
           onClick={() => addToCart({ ...variant })}
           className="px-6"
         >
-          {productInStock ? "Adicionar ao carrinho" : "Fora de estoque"}
+          {productInStock ? 'Adicionar ao carrinho' : 'Fora de estoque'}
         </ConfettiButton>
         <Button variant="outline" size="icon" type="button">
           <HeartIcon />

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { AnimatePresence, motion } from "framer-motion";
-import { ShoppingBagIcon } from "lucide-react";
-import Link from "next/link";
+import { AnimatePresence, motion } from 'framer-motion';
+import { ShoppingBagIcon } from 'lucide-react';
+import Link from 'next/link';
 
-import { useCartStore } from "@/stores/cart-store";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useCartStore } from '@/stores/cart-store';
 
 const CartButton = () => {
   const { totalQuantity } = useCartStore();

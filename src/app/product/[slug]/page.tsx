@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
 
-import { createClient } from "@/utils/supabase/server";
-import type { Variant } from "@/stores/cart-store";
+import type { Variant } from '@/stores/cart-store';
+import { createClient } from '@/utils/supabase/server';
 
-import { ProductBreadcrumb } from "./_components/breadcrumb";
-import { ImageCarousel } from "./_components/image-carousel";
-import { ProductForm } from "./_components/product-form";
+import { ProductBreadcrumb } from './_components/breadcrumb';
+import { ImageCarousel } from './_components/image-carousel';
+import { ProductForm } from './_components/product-form';
 
 type Props = {
   params: { slug: string };
@@ -21,9 +21,9 @@ export default async function ProductPage({ params: { slug } }: Props) {
   const supabase = createClient();
 
   const { data: product, error } = await supabase
-    .from("product")
-    .select("*")
-    .eq("slug", slug)
+    .from('product')
+    .select('*')
+    .eq('slug', slug)
     .single();
 
   if (error) {
@@ -31,15 +31,15 @@ export default async function ProductPage({ params: { slug } }: Props) {
   }
 
   const { data: variants, error: variantError } = await supabase
-    .from("products_skus")
+    .from('products_skus')
     .select(
       `*,
       size:product_attributes!products_skus_size_attribute_id_fkey(value),
       color:product_attributes!products_skus_color_attribute_id_fkey(value),
       product:product!products_skus_product_id_fkey(*)
-    `
+    `,
     )
-    .eq("product_id", product.id);
+    .eq('product_id', product.id);
 
   if (!variants || variants.length === 0 || variantError) {
     return notFound();
@@ -60,13 +60,10 @@ export default async function ProductPage({ params: { slug } }: Props) {
           image_urls={
             [
               product.cover
-                ? supabase.storage.from("products").getPublicUrl(product.cover)
-                    .data.publicUrl
+                ? supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl
                 : null,
               ...product.images.map(
-                (image) =>
-                  supabase.storage.from("products").getPublicUrl(image).data
-                    .publicUrl
+                (image) => supabase.storage.from('products').getPublicUrl(image).data.publicUrl,
               ),
             ].filter((val) => val !== null) as string[]
           }

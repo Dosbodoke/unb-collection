@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
-import { HeroCarousel } from "./hero-carousel";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { BentoCard, BentoGrid } from '@/components/magicui/bento-grid';
+import { useMediaQuery } from '@/hooks/use-media-query';
+
+import { HeroCarousel } from './hero-carousel';
 
 export const HeroSection = ({ items }: { items: string[] }) => {
-  const isBigScreen = useMediaQuery("(min-width: 1280px)");
+  const isBigScreen = useMediaQuery('(min-width: 1280px)');
 
   const features = [
     {
-      name: "UNB Collection",
-      description: "A loja do universitário",
-      href: "/",
-      cta: "Learn more",
-      imageUrl: "/UNB-dark.svg",
-      className:
-        "xl:col-start-1 xl:col-end-4 xl:row-start-7 xl:row-end-11 bg-cover bg-no-repeat",
+      name: 'UNB Collection',
+      description: 'A loja do universitário',
+      href: '/',
+      cta: 'Learn more',
+      imageUrl: '/UNB-dark.svg',
+      className: 'xl:col-start-1 xl:col-end-4 xl:row-start-7 xl:row-end-11 bg-cover bg-no-repeat',
     },
     {
-      name: "Cropped UNB",
-      description: "Perfeiro para os dias de calor",
-      href: "/product/cropped-manga-longa",
-      cta: "Ver cropped",
+      name: 'Cropped UNB',
+      description: 'Perfeiro para os dias de calor',
+      href: '/product/cropped-manga-longa',
+      cta: 'Ver cropped',
       imageUrl: items[1] as string,
-      className: "xl:col-start-4 xl:col-end-13 xl:row-start-7 xl:row-end-11",
+      className: 'xl:col-start-4 xl:col-end-13 xl:row-start-7 xl:row-end-11',
     },
     {
-      name: "Collection I",
-      description: "A primeira coleção da nossa loja",
-      href: "#",
-      cta: "Explorar coleção",
+      name: 'Collection I',
+      description: 'A primeira coleção da nossa loja',
+      href: '#',
+      cta: 'Explorar coleção',
       imageUrl: items[0] as string,
-      className: "xl:col-start-1 xl:col-end-13 xl:row-start-1 xl:row-end-7",
+      className: 'xl:col-start-1 xl:col-end-13 xl:row-start-1 xl:row-end-7',
     },
   ];
 

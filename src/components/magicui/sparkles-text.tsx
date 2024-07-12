@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { cn } from "@/utils/cn";
-import { motion } from "framer-motion";
-import { type CSSProperties, type ReactElement, useEffect, useState } from "react";
+import { motion } from 'framer-motion';
+import { type CSSProperties, type ReactElement, useEffect, useState } from 'react';
+
+import { cn } from '@/utils/cn';
 
 interface Sparkle {
   id: string;
@@ -61,7 +62,7 @@ interface SparklesTextProps {
 
 const SparklesText: React.FC<SparklesTextProps> = ({
   text,
-  colors = { first: "#A07CFE", second: "#FE8FB5" },
+  colors = { first: '#A07CFE', second: '#FE8FB5' },
   className,
   sparklesCount = 10,
   ...props
@@ -93,7 +94,7 @@ const SparklesText: React.FC<SparklesTextProps> = ({
           } else {
             return { ...star, lifespan: star.lifespan - 0.1 };
           }
-        })
+        }),
       );
     };
 
@@ -105,12 +106,12 @@ const SparklesText: React.FC<SparklesTextProps> = ({
 
   return (
     <div
-      className={cn("text-6xl font-bold", className)}
+      className={cn('text-6xl font-bold', className)}
       {...props}
       style={
         {
-          "--sparkles-first-color": `${colors.first}`,
-          "--sparkles-second-color": `${colors.second}`,
+          '--sparkles-first-color': `${colors.first}`,
+          '--sparkles-second-color': `${colors.second}`,
         } as CSSProperties
       }
     >

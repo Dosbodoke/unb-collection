@@ -1,4 +1,5 @@
-import * as React from "react";
+import { HomeIcon } from 'lucide-react';
+import * as React from 'react';
 
 import {
   Breadcrumb,
@@ -7,8 +8,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { HomeIcon } from "lucide-react";
+} from '@/components/ui/breadcrumb';
 
 export const ProductBreadcrumb = ({ itemName }: { itemName: string }) => {
   return (

@@ -1,6 +1,7 @@
-import { Badge } from "@/components/ui/badge";
-import { TagIcon } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from 'framer-motion';
+import { TagIcon } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 
 export const ProductPrice = ({
   price,
@@ -25,7 +26,7 @@ export const ProductPrice = ({
         >
           {discountPercentage ? (
             <div className="flex items-center gap-2">
-              {" "}
+              {' '}
               <div className="line-through text-muted-foreground text-base">
                 R${price.toFixed(2)}
               </div>

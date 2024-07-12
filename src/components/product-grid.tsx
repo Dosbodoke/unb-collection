@@ -1,14 +1,15 @@
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
-import { createClient } from "@/utils/supabase/server";
-import { UnbCollectionIcon } from "@/assets";
-import Link from "next/link";
-import { ImageWithHover } from "./product-image";
+import { UnbCollectionIcon } from '@/assets';
+import { createClient } from '@/utils/supabase/server';
+
+import { ImageWithHover } from './product-image';
 
 const ProductGrid = async () => {
   const supabase = createClient();
 
-  const { data: highlights, error } = await supabase.from("highlights").select(`
+  const { data: highlights, error } = await supabase.from('highlights').select(`
     id,
     product(
       *,
@@ -22,23 +23,16 @@ const ProductGrid = async () => {
 
   return (
     <ul className="grid w-full max-w-6xl mx-auto sm:grid-cols-3 grid-cols-2">
-      {products.map((product, index) => (
+      {products.map((product) => (
         <li key={product.id} className="bg-white border border-black">
-          <Link
-            href={`/product/${product.slug}`}
-            className="flex flex-col items-center"
-          >
+          <Link href={`/product/${product.slug}`} className="flex flex-col items-center">
             {product.cover ? (
               <ImageWithHover
-                cover={
-                  supabase.storage.from("products").getPublicUrl(product.cover)
-                    .data.publicUrl
-                }
+                cover={supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl}
                 back={
                   product.images && product.images[0]
-                    ? supabase.storage
-                        .from("products")
-                        .getPublicUrl(product.images[0]).data.publicUrl
+                    ? supabase.storage.from('products').getPublicUrl(product.images[0]).data
+                        .publicUrl
                     : null
                 }
                 productName={product.name}
@@ -52,10 +46,8 @@ const ProductGrid = async () => {
               <h3 className="text-sm truncate">{product.name}</h3>
               <p className="text-gray-500">
                 {product.products_skus && product.products_skus.length > 0
-                  ? `R$${Math.min(
-                      ...product.products_skus.map((sku) => sku.price)
-                    ).toFixed(2)}`
-                  : "Preço indisponível"}
+                  ? `R$${Math.min(...product.products_skus.map((sku) => sku.price)).toFixed(2)}`
+                  : 'Preço indisponível'}
               </p>
             </div>
           </Link>

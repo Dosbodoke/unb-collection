@@ -1,33 +1,20 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AnimatePresence, motion } from 'framer-motion';
+import { EyeIcon, EyeOffIcon, Loader2, TriangleAlertIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
 
-import { EyeIcon, EyeOffIcon, Loader2, TriangleAlertIcon } from "lucide-react";
-import { GoogleIcon } from "@/assets";
-
-import { loginUser, signup } from "@/app/auth/actions";
-import { createClient } from "@/utils/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input, MotionInput } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  MotionAlert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
-import { toast } from "sonner";
+import { loginUser, signup } from '@/app/auth/actions';
+import { GoogleIcon } from '@/assets';
+import { AlertDescription, AlertTitle, MotionAlert } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { MotionInput } from '@/components/ui/input';
+import { createClient } from '@/utils/supabase/client';
 
 const MotionButton = motion(Button);
 
@@ -44,9 +31,9 @@ const signupSchema = loginSchema
   .superRefine((data, ctx) => {
     if (data.confirmPassword !== data.password) {
       ctx.addIssue({
-        code: "custom",
-        message: "Senhas devem ser iguais",
-        path: ["confirmPassword"],
+        code: 'custom',
+        message: 'Senhas devem ser iguais',
+        path: ['confirmPassword'],
       });
     }
   });
@@ -56,13 +43,13 @@ const OrWithGoogle = () => {
 
   async function loginWithGoogle() {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
+      provider: 'google',
       options: {
         redirectTo: `${location.origin}/auth/callback?redirect_to=${location.href}`,
       },
     });
 
-    if (!error) toast.success("Login realizado", { icon: "🔑" });
+    if (!error) toast.success('Login realizado', { icon: '🔑' });
   }
 
   return (
@@ -129,16 +116,16 @@ const LoginCard = ({
   setMode,
 }: {
   onSuccess?: () => void;
-  setMode: React.Dispatch<React.SetStateAction<"login" | "signup">>;
+  setMode: React.Dispatch<React.SetStateAction<'login' | 'signup'>>;
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -147,14 +134,14 @@ const LoginCard = ({
 
     if (res.success) {
       form.reset();
-      toast.success("Login realizado", { icon: "🔑" });
+      toast.success('Login realizado', { icon: '🔑' });
       if (onSuccess) {
         onSuccess();
       }
     }
 
     if (res.reason) {
-      form.setError("root.reason", { message: res.reason });
+      form.setError('root.reason', { message: res.reason });
     }
   }
 
@@ -202,7 +189,7 @@ const LoginCard = ({
                     <MotionInput
                       layoutId="auth-password"
                       placeholder="Sua senha"
-                      type={passwordVisible ? "text" : "password"}
+                      type={passwordVisible ? 'text' : 'password'}
                       {...field}
                       className="h-auto"
                     />
@@ -226,8 +213,7 @@ const LoginCard = ({
             layoutId="auth-submit"
             type="submit"
             disabled={
-              form.formState.isSubmitting ||
-              (!form.formState.isValid && form.formState.isDirty)
+              form.formState.isSubmitting || (!form.formState.isValid && form.formState.isDirty)
             }
             className="w-full flex gap-2 items-center"
           >
@@ -241,13 +227,8 @@ const LoginCard = ({
             )}
           </MotionButton>
           <motion.div layoutId="auth-change" className="text-center text-sm">
-            Não tem uma conta?{" "}
-            <Button
-              type="button"
-              onClick={() => setMode("signup")}
-              variant="link"
-              className="p-0"
-            >
+            Não tem uma conta?{' '}
+            <Button type="button" onClick={() => setMode('signup')} variant="link" className="p-0">
               Inscrever-se
             </Button>
           </motion.div>
@@ -260,17 +241,17 @@ const LoginCard = ({
 export const SignupCard = ({
   setMode,
 }: {
-  setMode: React.Dispatch<React.SetStateAction<"login" | "signup">>;
+  setMode: React.Dispatch<React.SetStateAction<'login' | 'signup'>>;
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
@@ -279,13 +260,13 @@ export const SignupCard = ({
 
     if (res.success) {
       form.reset();
-      toast.error("Conta criada", { icon: "🎉" });
-      setMode("login");
+      toast.error('Conta criada', { icon: '🎉' });
+      setMode('login');
     }
 
     if (res.reason) {
-      form.setError("root.reason", { message: res.reason });
-      form.setError("email", { message: "" });
+      form.setError('root.reason', { message: res.reason });
+      form.setError('email', { message: '' });
     }
   }
 
@@ -334,7 +315,7 @@ export const SignupCard = ({
                     <MotionInput
                       layoutId="auth-password"
                       placeholder="Sua senha"
-                      type={passwordVisible ? "text" : "password"}
+                      type={passwordVisible ? 'text' : 'password'}
                       {...field}
                       className="h-auto group-aria-[invalid=true]:border-red-500"
                     />
@@ -370,7 +351,7 @@ export const SignupCard = ({
                         transition: { duration: 0.2 },
                       }}
                       placeholder="Confirmar senha"
-                      type={passwordVisible ? "text" : "password"}
+                      type={passwordVisible ? 'text' : 'password'}
                       {...field}
                       className="h-auto group-aria-[invalid=true]:border-red-500"
                     />
@@ -389,7 +370,7 @@ export const SignupCard = ({
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -10 }}
-              transition={{ duration: 1, type: "spring" }}
+              transition={{ duration: 1, type: 'spring' }}
               variant="destructive"
               className="flex items-start gap-2"
             >
@@ -399,9 +380,8 @@ export const SignupCard = ({
               <div>
                 <AlertTitle>{rootError}</AlertTitle>
                 <AlertDescription>
-                  Se você se registrou usando o Google, tente fazer login
-                  diretamente com sua conta Google. Caso contrário, utilize
-                  outro e-mail ou recupere sua senha se esqueceu.
+                  Se você se registrou usando o Google, tente fazer login diretamente com sua conta
+                  Google. Caso contrário, utilize outro e-mail ou recupere sua senha se esqueceu.
                 </AlertDescription>
               </div>
             </MotionAlert>
@@ -410,8 +390,7 @@ export const SignupCard = ({
             layoutId="auth-submit"
             type="submit"
             disabled={
-              form.formState.isSubmitting ||
-              (!form.formState.isValid && form.formState.isDirty)
+              form.formState.isSubmitting || (!form.formState.isValid && form.formState.isDirty)
             }
             className="w-full flex gap-2 items-center"
           >
@@ -425,13 +404,8 @@ export const SignupCard = ({
             )}
           </MotionButton>
           <motion.div layoutId="auth-change" className="text-center text-sm">
-            Já tem uma conta?{" "}
-            <Button
-              type="button"
-              onClick={() => setMode("login")}
-              variant="link"
-              className="p-0"
-            >
+            Já tem uma conta?{' '}
+            <Button type="button" onClick={() => setMode('login')} variant="link" className="p-0">
               Entrar
             </Button>
           </motion.div>
@@ -442,7 +416,7 @@ export const SignupCard = ({
 };
 
 const AuthCard = ({ onLogin }: { onLogin?: () => void }) => {
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<'login' | 'signup'>('login');
 
   return (
     <motion.div
@@ -450,12 +424,8 @@ const AuthCard = ({ onLogin }: { onLogin?: () => void }) => {
       className="flex flex-col items-center w-full max-w-lg gap-4 border bg-background p-6 shadow-lg sm:rounded-lg overflow-hidden"
     >
       <AnimatePresence mode="wait">
-        {mode === "login" ? (
-          <LoginCard
-            key="auth-card-login"
-            setMode={setMode}
-            onSuccess={onLogin}
-          />
+        {mode === 'login' ? (
+          <LoginCard key="auth-card-login" setMode={setMode} onSuccess={onLogin} />
         ) : (
           <SignupCard key="auth-card-signup" setMode={setMode} />
         )}

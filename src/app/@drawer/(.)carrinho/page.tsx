@@ -1,19 +1,21 @@
-"use client";
+'use client';
 
+import { AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import EmptySpaceSvg from '@/assets/empty-space.svg';
+import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerContent,
-  DrawerHeader,
   DrawerFooter,
+  DrawerHeader,
   DrawerTitle,
-} from "@/components/ui/drawer";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import EmptySpaceSvg from "@/assets/empty-space.svg";
-import Image from "next/image";
-import { Item } from "./_components/item";
-import { useCartStore } from "@/stores/cart-store";
-import { AnimatePresence } from "framer-motion";
+} from '@/components/ui/drawer';
+import { useCartStore } from '@/stores/cart-store';
+
+import { Item } from './_components/item';
 
 export default function Carrinho() {
   const router = useRouter();
@@ -38,24 +40,14 @@ export default function Carrinho() {
         <div className="flex-1 overflow-y-auto px-4 py-6">
           {cartIsEmpty ? (
             <div className="gap-6 h-full w-full flex flex-col justify-center">
-              <Image
-                priority
-                src={EmptySpaceSvg}
-                alt="Ilustração para carrinho vazio"
-              />
-              <h2 className="text-center text-muted-foreground">
-                Seu carrinho está vazio
-              </h2>
+              <Image priority src={EmptySpaceSvg} alt="Ilustração para carrinho vazio" />
+              <h2 className="text-center text-muted-foreground">Seu carrinho está vazio</h2>
             </div>
           ) : (
             <ul className="grid gap-6 overflow-hidden">
               <AnimatePresence mode="popLayout">
                 {cart.map((item) => (
-                  <Item
-                    item={item}
-                    key={item.product_sku.id}
-                    removeFromCart={deleteFromCart}
-                  />
+                  <Item item={item} key={item.product_sku.id} removeFromCart={deleteFromCart} />
                 ))}
               </AnimatePresence>
             </ul>

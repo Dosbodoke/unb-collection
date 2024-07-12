@@ -1,10 +1,10 @@
-import {
-  Button,
-  type ButtonProps,
-  type ButtonIconProps,
-} from "@/components/ui/button";
-import confetti from "canvas-confetti";
-import type { ReactNode } from "react";
+import type {
+  CreateTypes as ConfettiInstance,
+  GlobalOptions as ConfettiGlobalOptions,
+  Options as ConfettiOptions,
+} from 'canvas-confetti';
+import confetti from 'canvas-confetti';
+import type { ReactNode } from 'react';
 import React, {
   createContext,
   forwardRef,
@@ -13,20 +13,15 @@ import React, {
   useImperativeHandle,
   useMemo,
   useRef,
-} from "react";
+} from 'react';
 
-import type {
-  GlobalOptions as ConfettiGlobalOptions,
-  Options as ConfettiOptions,
-} from "canvas-confetti";
-
-import type { CreateTypes as ConfettiInstance } from "canvas-confetti";
+import { Button, type ButtonIconProps, type ButtonProps } from '@/components/ui/button';
 
 type Api = {
   fire: (options?: ConfettiOptions) => void;
 };
 
-type Props = React.ComponentPropsWithRef<"canvas"> & {
+type Props = React.ComponentPropsWithRef<'canvas'> & {
   options?: ConfettiOptions;
   globalOptions?: ConfettiGlobalOptions;
   manualstart?: boolean;
@@ -66,20 +61,20 @@ const Confetti = forwardRef<ConfettiRef, Props>((props, ref) => {
         }
       }
     },
-    [globalOptions]
+    [globalOptions],
   );
 
   // `fire` is a function that calls the instance() with `opts` merged with `options`
   const fire = useCallback(
     (opts = {}) => instanceRef.current?.({ ...options, ...opts }),
-    [options]
+    [options],
   );
 
   const api = useMemo(
     () => ({
       fire,
     }),
-    [fire]
+    [fire],
   );
 
   useImperativeHandle(ref, () => api, [api]);
@@ -101,8 +96,7 @@ const Confetti = forwardRef<ConfettiRef, Props>((props, ref) => {
 // interface ButtonWithIcon extends ButtonProps & ButtonIconProps
 
 interface ConfettiButtonProps extends ButtonProps {
-  options?: ConfettiOptions &
-    ConfettiGlobalOptions & { canvas?: HTMLCanvasElement };
+  options?: ConfettiOptions & ConfettiGlobalOptions & { canvas?: HTMLCanvasElement };
   children?: React.ReactNode;
 }
 

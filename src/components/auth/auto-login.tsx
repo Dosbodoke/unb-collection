@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+import { createClient } from '@/utils/supabase/client';
 
 const GoogleOneTapLogin = () => {
   const supabase = createClient();
@@ -25,7 +26,7 @@ const GoogleOneTapLogin = () => {
 
   async function handleSignInWithGoogle(response: any) {
     const { data, error } = await supabase.auth.signInWithIdToken({
-      provider: "google",
+      provider: 'google',
       token: response.credential,
     });
 

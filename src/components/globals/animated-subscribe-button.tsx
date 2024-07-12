@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
-import { AnimatePresence, motion } from "framer-motion";
-import type React from "react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { CheckIcon, ChevronRightIcon } from "lucide-react";
+import { AnimatePresence, motion } from 'framer-motion';
+import { CheckIcon, ChevronRightIcon } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 interface AnimatedSubscribeButtonProps {
   subscribeStatus?: boolean;
 }
 
-export const AnimatedSubscribeButton: React.FC<
-  AnimatedSubscribeButtonProps
-> = ({ subscribeStatus = false }) => {
+export const AnimatedSubscribeButton: React.FC<AnimatedSubscribeButtonProps> = ({
+  subscribeStatus = false,
+}) => {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(subscribeStatus);
 
   return (
@@ -34,7 +35,7 @@ export const AnimatedSubscribeButton: React.FC<
             >
               <span className="group inline-flex items-center">
                 <CheckIcon className="mr-2 h-4 w-4" />
-                Inscrito{" "}
+                Inscrito{' '}
               </span>
             </motion.span>
           </motion.button>
@@ -55,7 +56,7 @@ export const AnimatedSubscribeButton: React.FC<
               exit={{ x: 50, transition: { duration: 0.1 } }}
             >
               <span className="group inline-flex items-center">
-                Inscrever-se{" "}
+                Inscrever-se{' '}
                 <ChevronRightIcon className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </motion.span>
