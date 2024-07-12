@@ -53,28 +53,30 @@ export default async function ProductPage({ params: { slug } }: Props) {
   }
 
   return (
-    <div className="max-w-6xl px-4 mx-auto py-6 flex flex-col gap-6">
-      <ProductBreadcrumb itemName={product.name} />
-      <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
-        <ImageCarousel
-          image_urls={
-            [
-              product.cover
-                ? supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl
-                : null,
-              ...product.images.map(
-                (image) => supabase.storage.from('products').getPublicUrl(image).data.publicUrl,
-              ),
-            ].filter((val) => val !== null) as string[]
-          }
-          productName={product.name}
-        />
-        <div className="space-y-4">
-          <div className="grid gap-4">
-            <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>
-            {product.description ? <p>{product.description}</p> : null}
+    <div className="flex-1 flex flex-col pt-24">
+      <div className="max-w-6xl px-4 mx-auto py-6 flex flex-col gap-6">
+        <ProductBreadcrumb itemName={product.name} />
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
+          <ImageCarousel
+            image_urls={
+              [
+                product.cover
+                  ? supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl
+                  : null,
+                ...product.images.map(
+                  (image) => supabase.storage.from('products').getPublicUrl(image).data.publicUrl,
+                ),
+              ].filter((val) => val !== null) as string[]
+            }
+            productName={product.name}
+          />
+          <div className="space-y-4">
+            <div className="grid gap-4">
+              <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>
+              {product.description ? <p>{product.description}</p> : null}
+            </div>
+            <ProductForm productVariants={validVariants} />
           </div>
-          <ProductForm productVariants={validVariants} />
         </div>
       </div>
     </div>
