@@ -69,7 +69,7 @@ export const useCartStore = create<CartState>()(
         }),
     }),
     {
-      name: 'cart-storage', // name of the item in the storage (must be unique)
+      name: 'cart-storage',
     },
   ),
 );

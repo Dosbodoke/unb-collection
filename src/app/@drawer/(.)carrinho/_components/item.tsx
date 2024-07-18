@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Trash2Icon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -24,10 +25,11 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
       animate={{ opacity: 1, x: 0, scale: 1 }}
       exit={{ opacity: 0, x: 200, scale: 1.2 }}
       transition={{ duration: 0.6, type: 'spring' }}
+      className="hover:bg-muted px-4 py-2"
     >
       <Link href={`/product/${item.product_sku.product.slug}`} className="flex flex-row gap-4">
         {item.product_sku.product.cover ? (
-          <img
+          <Image
             src={
               supabase.storage.from('products').getPublicUrl(item.product_sku.product.cover).data
                 .publicUrl
@@ -49,7 +51,7 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
             <p className="font-medium">${(item.product_sku.price * item.quantity).toFixed(2)}</p>
           </div>
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-start">
           <Button
             variant="destructive"
             size="icon"

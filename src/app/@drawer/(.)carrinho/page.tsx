@@ -1,9 +1,13 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertTriangleIcon } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -12,10 +16,10 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
+import { Textarea } from '@/components/ui/textarea';
 import { useCartStore } from '@/stores/cart-store';
 
 import { Item } from './_components/item';
-import Link from 'next/link';
 
 export default function Carrinho() {
   const router = useRouter();
@@ -33,14 +37,14 @@ export default function Carrinho() {
         }
       }}
     >
-      <DrawerContent className="bg-white flex flex-col rounded-tr-none rounded-l-[10px] h-full w-full max-w-80 md:max-w-96 mt-24 fixed bottom-0 right-0 left-auto">
+      <DrawerContent className="bg-white flex flex-col rounded-tr-none rounded-l-[10px] h-full w-full max-w-96  mt-24 fixed bottom-0 right-0 left-auto">
         <DrawerHeader>
           <DrawerTitle>Seu carrinho</DrawerTitle>
           <div className="w-full h-px bg-muted shadow-sm" />
         </DrawerHeader>
-        <div className="flex-1 overflow-y-auto px-4 py-6">
+        <div className="flex-1 overflow-y-auto py-6">
           {cartIsEmpty ? (
-            <div className="gap-4 h-full w-full flex flex-col justify-center">
+            <div className="gap-4 h-full w-full flex flex-col justify-center px-4 ">
               <Image
                 priority
                 width={256}
@@ -59,7 +63,7 @@ export default function Carrinho() {
               </div>
             </div>
           ) : (
-            <ul className="grid gap-6 overflow-hidden">
+            <ul className="grid gap-4 overflow-hidden">
               <AnimatePresence mode="popLayout">
                 {cart.map((item) => (
                   <Item item={item} key={item.product_sku.id} removeFromCart={deleteFromCart} />
@@ -68,17 +72,33 @@ export default function Carrinho() {
             </ul>
           )}
         </div>
-        <DrawerFooter className="border-t border-gray-200 dark:border-gray-800 pt-6">
-          <div className="grid gap-2">
-            <div className="flex items-center justify-between">
-              <p className="text-gray-500 dark:text-gray-400">total</p>
-              <p className="font-medium">R${totalValue.toFixed(2)}</p>
+        {cartIsEmpty ? null : (
+          <DrawerFooter className="border-t border-gray-200 dark:border-gray-800 pt-6">
+            <Alert className="border-none p-0">
+              <AlertTitle className="flex items-end gap-1">
+                <AlertTriangleIcon className="size-5 text-yellow-500" />{' '}
+                <span>Sobre a entrega</span>
+              </AlertTitle>
+              <AlertDescription>
+                O seu pedido deverá ser retirado pessoalmente na Universidade de Brasília - Campus
+                Darcy Ribeiro
+              </AlertDescription>
+              <Textarea
+                placeholder="Adicione uma nota ao seu pedido"
+                className="resize-none mt-2"
+              />
+            </Alert>
+            <div className="grid gap-2">
+              <motion.div className="flex items-center justify-between">
+                <p className="text-gray-500 dark:text-gray-400">total</p>
+                <p className="font-medium">R${totalValue.toFixed(2)}</p>
+              </motion.div>
+              <Button size="lg" type="button">
+                Finalizar compra
+              </Button>
             </div>
-            <Button size="lg" type="button" disabled={cartIsEmpty}>
-              Finalizar compra
-            </Button>
-          </div>
-        </DrawerFooter>
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );
