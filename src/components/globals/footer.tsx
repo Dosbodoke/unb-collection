@@ -20,6 +20,20 @@ export const Footer = () => {
             de Brasília
           </p>
         </div>
+
+        <div className="space-y-2">
+          <h4 className="text-lg font-semibold text-gray-50 dark:text-gray-50">Segurança</h4>
+          <div className="flex flex-col gap-4">
+            <Badge variant="secondary" className="flex gap-2 py-1 w-fit">
+              <ShieldCheckIcon className="text-blue-700" />
+              Encriptamento SSL
+            </Badge>
+            <p className="text-gray-400 dark:text-gray-400">
+              Sua segurança é nossa prioridade. Todas as suas informações são protegidas com
+              criptografia SSL, garantindo uma navegação segura em nosso site.
+            </p>
+          </div>
+        </div>
         <div className="space-y-2">
           <h4 className="text-lg font-semibold text-gray-50 dark:text-gray-50">
             Se conecte com a gente
@@ -59,19 +73,6 @@ export const Footer = () => {
               <MailIcon className="h-6 w-6 text-blue-500" />
               <span className="text-gray-400">unb-collection@gmail.com</span>
             </div>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <h4 className="text-lg font-semibold text-gray-50 dark:text-gray-50">Segurança</h4>
-          <div className="flex flex-col gap-4">
-            <Badge variant="secondary" className="flex gap-2 py-1 w-fit">
-              <ShieldCheckIcon className="text-blue-700" />
-              Encriptamento SSL
-            </Badge>
-            <p className="text-gray-400 dark:text-gray-400">
-              Sua segurança é nossa prioridade. Todas as suas informações são protegidas com
-              criptografia SSL, garantindo uma navegação segura em nosso site.
-            </p>
           </div>
         </div>
       </div>
