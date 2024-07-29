@@ -92,6 +92,7 @@ const Confetti = forwardRef<ConfettiRef, Props>((props, ref) => {
     </ConfettiContext.Provider>
   );
 });
+Confetti.displayName = 'Confetti';
 
 // interface ButtonWithIcon extends ButtonProps & ButtonIconProps
 

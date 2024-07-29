@@ -1,7 +1,6 @@
 'use client';
 
 import { HeartIcon, ShoppingCartIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
 import { ConfettiButton } from '@/components/magicui/confetti';
@@ -13,7 +12,6 @@ import { ProductPrice } from './product-price';
 import { type Sizes, SizeVariant } from './size-variant';
 
 const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
-  const router = useRouter();
   const { addToCart } = useCartStore();
   const [selectedSize, setSelectedSize] = useState<Sizes>();
   const [selectedColor, setSelectedColor] = useState<Colors>();
@@ -73,7 +71,6 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
           disabled={!productInStock}
           onClick={() => {
             addToCart({ ...variant });
-            router.push('/carrinho');
           }}
           className="px-6"
         >

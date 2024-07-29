@@ -19,8 +19,10 @@ interface CartState {
   cart: CartItem[];
   totalQuantity: number;
   totalValue: number;
+  isCartOpen: boolean;
   addToCart: (sku: CartItem['product_sku']) => void;
   deleteFromCart: (productId: number) => void;
+  setCartOpen: (isOpen: boolean) => void;
 }
 
 function calculateCartTotals(cart: CartItem[]) {
@@ -40,6 +42,7 @@ export const useCartStore = create<CartState>()(
       cart: [],
       totalQuantity: 0,
       totalValue: 0,
+      isCartOpen: false,
       addToCart: (sku) =>
         set((state) => {
           const existingItemIndex = state.cart.findIndex((item) => item.product_sku.id === sku.id);
@@ -59,7 +62,7 @@ export const useCartStore = create<CartState>()(
           }
 
           const { totalQuantity, totalValue } = calculateCartTotals(updatedCart);
-          return { cart: updatedCart, totalQuantity, totalValue };
+          return { cart: updatedCart, totalQuantity, totalValue, isCartOpen: true };
         }),
       deleteFromCart: (productId) =>
         set((state) => {
@@ -67,6 +70,7 @@ export const useCartStore = create<CartState>()(
           const { totalQuantity, totalValue } = calculateCartTotals(updatedCart);
           return { cart: updatedCart, totalQuantity, totalValue };
         }),
+      setCartOpen: (isOpen) => set({ isCartOpen: isOpen }),
     }),
     {
       name: 'cart-storage',

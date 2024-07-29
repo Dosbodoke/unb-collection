@@ -36,17 +36,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  drawer,
   modal,
 }: {
   children: React.ReactNode;
-  drawer: React.ReactNode;
   modal: React.ReactNode;
 }) {
   return (
     <html lang="pt-BR" className={GeistSans.className}>
       <body className="bg-[#efefef] text-foreground relative">
-        {drawer}
         {modal}
         <Navbar />
         <main className="min-h-[90vh] flex flex-col">{children}</main>

@@ -2,18 +2,19 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { ShoppingBagIcon } from 'lucide-react';
-import Link from 'next/link';
+import React from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useCartStore } from '@/stores/cart-store';
 
-const CartButton = () => {
-  const { totalQuantity } = useCartStore();
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  totalQuantity: number;
+}
 
-  return (
-    <Button asChild variant="link" className="relative">
-      <Link href="/carrinho">
+const CartButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ totalQuantity, ...props }, ref) => {
+    return (
+      <Button ref={ref} {...props} variant="link" className="relative">
         <ShoppingBagIcon className="h-6 w-6" />
         <AnimatePresence mode="wait">
           <Badge className="absolute -top-2 -right-1 rounded-full bg-primary text-xs text-white">
@@ -28,9 +29,10 @@ const CartButton = () => {
             </motion.div>
           </Badge>
         </AnimatePresence>
-      </Link>
-    </Button>
-  );
-};
+      </Button>
+    );
+  },
+);
+CartButton.displayName = 'CartButton';
 
 export { CartButton };

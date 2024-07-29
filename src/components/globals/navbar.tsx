@@ -1,12 +1,10 @@
-import { MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { UnbCollectionIcon } from '@/assets';
-import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/server';
 
 import UserDropdown from '../auth/user-dropdown';
-import { CartButton } from './cart-button';
+import Carrinho from '../carrinho';
 
 const Navbar = async () => {
   const supabase = createClient();
@@ -18,11 +16,8 @@ const Navbar = async () => {
         <UnbCollectionIcon className="fill-black" />
       </Link>
       <div className="flex gap-4 items-center">
-        <CartButton />
+        <Carrinho />
         <UserDropdown user={data.user} />
-        <Button variant="outline" size="icon">
-          <MenuIcon className="h-6 w-6" />
-        </Button>
       </div>
     </nav>
   );

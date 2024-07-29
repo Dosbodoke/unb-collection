@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Trash2Icon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import React, { forwardRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 import type { CartItem } from '@/stores/cart-store';
@@ -14,11 +15,12 @@ interface ItemProps {
   removeFromCart: (id: number) => void;
 }
 
-const Item = ({ item, removeFromCart }: ItemProps) => {
+const Item = forwardRef<HTMLLIElement, ItemProps>(({ item, removeFromCart }, ref) => {
   const supabase = createClient();
 
   return (
     <motion.li
+      ref={ref}
       key={item.product_sku.id}
       layout
       initial={{ opacity: 0, x: -200, scale: 0.5 }}
@@ -37,9 +39,11 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
             alt={item.product_sku.product.name}
             width={80}
             height={80}
-            className="rounded-md object-cover"
+            className="rounded-md object-cover overflow-hidden"
           />
-        ) : null}
+        ) : (
+          <div style={{ width: 80, height: 80 }} className="bg-muted rounded-md" />
+        )}
         <div className="flex-1 flex flex-col gap-1">
           <h3 className="font-medium">{item.product_sku.product.name}</h3>
           <div>
@@ -55,7 +59,10 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
           <Button
             variant="destructive"
             size="icon"
-            onClick={() => removeFromCart(item.product_sku.id)}
+            onClick={(e) => {
+              e.preventDefault();
+              removeFromCart(item.product_sku.id);
+            }}
           >
             <Trash2Icon className="h-4 w-4" />
             <span className="sr-only">Remove {item.product_sku.product.name}</span>
@@ -64,6 +71,8 @@ const Item = ({ item, removeFromCart }: ItemProps) => {
       </Link>
     </motion.li>
   );
-};
+});
+
+Item.displayName = 'Item';
 
 export { Item };

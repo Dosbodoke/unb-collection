@@ -20,10 +20,10 @@ export const ProductBreadcrumb = ({ itemName }: { itemName: string }) => {
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/catalog">Catálogo</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
+        {/* <BreadcrumbItem>
+          <BreadcrumbLink href="/catalog">Produtos</BreadcrumbLink>
+        </BreadcrumbItem> */}
+        {/* <BreadcrumbSeparator /> */}
         <BreadcrumbItem>
           <BreadcrumbPage>{itemName}</BreadcrumbPage>
         </BreadcrumbItem>
