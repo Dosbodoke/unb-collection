@@ -44,3 +44,9 @@ A E-commerce built with Next 14.2 and backed by supabase
    The starter kit should now be running on [localhost:3000](http://localhost:3000/).
 
 > Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+
+> [!TIP]
+> To update local types for changes made on the cloud dashboard, you can link a projet with
+> `npx supabase login && npx supabase link`  
+> and then generate the types with
+> `npx supabase@latest gen types typescript --linked --schema storage,public,functions > src/utils/supabase/database.types.ts`
