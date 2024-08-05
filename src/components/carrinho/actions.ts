@@ -2,17 +2,13 @@
 
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
+import type { OrderData } from './_components/drawer-footer';
+
 export const createPreference = async ({
   orderData,
   hostUrl,
 }: {
-  orderData: {
-    id: string;
-    quantity: number;
-    unit_price: number;
-    description: string;
-    title: string;
-  }[];
+  orderData: OrderData;
   hostUrl: string;
 }): Promise<
   | {
@@ -35,7 +31,7 @@ export const createPreference = async ({
         failure: `${hostUrl}/pedido`,
         pending: `${hostUrl}/pedido`,
       },
-      statement_descriptor: 'UNB COLLECTION',
+      statement_descriptor: 'UNB COLLECTION', // Up to 16 characters
       payment_methods: {
         excluded_payment_methods: [
           {
@@ -56,7 +52,7 @@ export const createPreference = async ({
         mode: 'not_specified',
         free_shipping: false,
       },
-      items: orderData,
+      items: orderData.items.map((item) => ({ ...item, category_id: 'fashion' })),
     },
   });
 
