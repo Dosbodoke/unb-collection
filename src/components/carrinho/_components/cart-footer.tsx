@@ -1,36 +1,29 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangleIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { DrawerFooter as DrawerFooterPrimitive } from '@/components/ui/drawer';
+import { DrawerFooter } from '@/components/ui/drawer';
 import { Textarea } from '@/components/ui/textarea';
-import { CartItem, useCartStore } from '@/stores/cart-store';
+import { type CartItem, useCartStore } from '@/stores/cart-store';
 import { createClient } from '@/utils/supabase/client';
 
-import { PayWithMercadoPago } from './pay-with-mercado-pago';
+import type { OrderData } from '../index';
 
-export type OrderData = {
-  orderId: string;
-  items: {
-    id: string;
-    quantity: number;
-    unit_price: number;
-    description: string;
-    title: string;
-  }[];
-};
+export function CartFooter({
+  setOrder,
+}: {
+  setOrder: React.Dispatch<React.SetStateAction<OrderData | null>>;
+}) {
+  const { totalValue, cart, wipeCart } = useCartStore();
+  const cartIsEmpty = cart.length === 0;
 
-export function DrawerFooter() {
-  const { totalValue, cart } = useCartStore();
   const router = useRouter();
   const supabase = createClient();
-  const [order, setOrder] = useState<null | OrderData>(null);
 
   const createOrder = useMutation({
     mutationFn: async (cart: CartItem[]) => {
@@ -97,6 +90,10 @@ export function DrawerFooter() {
           unit_price: price,
           description: `${variant.product?.name || ''} - ${variant.size?.value || ''}, ${variant.color?.value || ''}`,
           title: variant.product?.name || '',
+          imageUrl:
+            variant.product && variant.product.cover
+              ? supabase.storage.from('products').getPublicUrl(variant.product.cover).data.publicUrl
+              : null,
         };
       });
 
@@ -115,60 +112,38 @@ export function DrawerFooter() {
         throw new Error('Order total mismatch');
       }
 
+      wipeCart();
       setOrder(orderData);
     },
   });
 
+  if (cartIsEmpty) return null;
+
   return (
-    <DrawerFooterPrimitive className="border-t border-gray-200 dark:border-gray-800">
-      <AnimatePresence initial={false}>
-        {order ? (
-          <motion.div
-            initial={{ x: 25, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -25, opacity: 0 }}
-            key="pay-with-mercado-pago"
-          >
-            <PayWithMercadoPago orderData={order} />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="continue-to-payment"
-            initial={{ x: 25, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -25, opacity: 0 }}
-            className="flex flex-col gap-4 w-full"
-          >
-            <div className="gap-2 flex flex-col">
-              <Alert className="border-none p-0">
-                <AlertTitle className="flex items-end gap-1">
-                  <AlertTriangleIcon className="size-5 text-yellow-500" />{' '}
-                  <span>Sobre a entrega</span>
-                </AlertTitle>
-                <AlertDescription>
-                  O seu pedido deverá ser retirado pessoalmente na Universidade de Brasília - Campus
-                  Darcy Ribeiro
-                </AlertDescription>
-              </Alert>
-              <Textarea
-                placeholder="Adicione uma nota ao seu pedido"
-                className="resize-none mt-2"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <p className="text-gray-500 dark:text-gray-400">total</p>
-              <p className="font-medium">R${totalValue.toFixed(2)}</p>
-            </div>
-            <Button
-              onClick={async () => {
-                await createOrder.mutateAsync(cart);
-              }}
-            >
-              Continuar para pagamento
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </DrawerFooterPrimitive>
+    <DrawerFooter className="border-t border-gray-200 dark:border-gray-800">
+      <div className="gap-2 flex flex-col">
+        <Alert className="border-none p-0">
+          <AlertTitle className="flex items-end gap-1">
+            <AlertTriangleIcon className="size-5 text-yellow-500" /> <span>Sobre a entrega</span>
+          </AlertTitle>
+          <AlertDescription>
+            O seu pedido deverá ser retirado pessoalmente na Universidade de Brasília - Campus Darcy
+            Ribeiro
+          </AlertDescription>
+        </Alert>
+        <Textarea placeholder="Adicione uma nota ao seu pedido" className="resize-none mt-2" />
+      </div>
+      <div className="flex items-center justify-between">
+        <p className="text-gray-500 dark:text-gray-400">total</p>
+        <p className="font-medium">R${totalValue.toFixed(2)}</p>
+      </div>
+      <Button
+        onClick={async () => {
+          await createOrder.mutateAsync(cart);
+        }}
+      >
+        Continuar para pagamento
+      </Button>
+    </DrawerFooter>
   );
 }

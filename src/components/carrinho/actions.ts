@@ -2,7 +2,7 @@
 
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
-import type { OrderData } from './_components/drawer-footer';
+import type { OrderData } from './index';
 
 export const createPreference = async ({
   orderData,

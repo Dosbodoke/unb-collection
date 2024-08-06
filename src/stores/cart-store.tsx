@@ -22,6 +22,7 @@ interface CartState {
   isCartOpen: boolean;
   addToCart: (sku: CartItem['product_sku']) => void;
   deleteFromCart: (productId: number) => void;
+  wipeCart: () => void;
   setCartOpen: (isOpen: boolean) => void;
 }
 
@@ -70,6 +71,7 @@ export const useCartStore = create<CartState>()(
           const { totalQuantity, totalValue } = calculateCartTotals(updatedCart);
           return { cart: updatedCart, totalQuantity, totalValue };
         }),
+      wipeCart: () => set(() => ({ cart: [], totalQuantity: 0, totalValue: 0 })),
       setCartOpen: (isOpen) => set({ isCartOpen: isOpen }),
     }),
     {
