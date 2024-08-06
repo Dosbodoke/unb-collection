@@ -4,6 +4,19 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 
 import type { OrderData } from './index';
 
+type PreferenceMetadata = {
+  orderId: string;
+  total: number;
+  items: {
+    id: string;
+    quantity: number;
+    unit_price: number;
+    description: string;
+    title: string;
+    imageUrl: string | null;
+  }[];
+};
+
 export const createPreference = async ({
   orderData,
   hostUrl,
@@ -53,6 +66,11 @@ export const createPreference = async ({
         free_shipping: false,
       },
       items: orderData.items.map((item) => ({ ...item, category_id: 'fashion' })),
+      metadata: {
+        orderId: orderData.orderId,
+        total: orderData.totalValue,
+        items: orderData.items,
+      } satisfies PreferenceMetadata,
     },
   });
 
@@ -61,4 +79,19 @@ export const createPreference = async ({
   }
 
   return { success: false };
+};
+
+export const getPreference = async (preferenceId: string) => {
+  const client = new MercadoPagoConfig({
+    accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN as string,
+  });
+  const preference = new Preference(client);
+
+  const res = await preference.get({ preferenceId });
+
+  if (res.metadata) {
+    return res.metadata as PreferenceMetadata;
+  }
+
+  return null;
 };

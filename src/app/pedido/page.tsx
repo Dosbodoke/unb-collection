@@ -1,87 +1,72 @@
-'use client';
-
-import { CircleCheckIcon } from 'lucide-react';
+import { CircleCheckIcon, ClockIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
+import { Item } from '@/components/carrinho/_components/item';
+import { getPreference } from '@/components/carrinho/actions';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-export default function Component() {
-  const params = useSearchParams();
-
+export default async function OrderDetails({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   // Reference to the Mercado Pago documentation for payment redirect
   // https://www.mercadopago.com.br/developers/pt/docs/checkout-pro/checkout-customization/user-interface/redirection
-  const paymentId = params.get('payment_id');
-  const status = params.get('status');
-  const externalReference = params.get('external_reference');
-  const merchantOrderId = params.get('merchant_order_id');
+  const status = searchParams?.status;
+  const preferenceId = searchParams?.preference_id;
 
-  console.log({
-    paymentId,
-    status,
-    externalReference,
-    merchantOrderId,
-  });
+  if (typeof preferenceId !== 'string') {
+    return notFound();
+  }
+
+  const metadata = await getPreference(preferenceId);
+
+  if (!metadata) {
+    return notFound();
+  }
 
   return (
     <div className="grid place-items-center flex-1">
-      <Card className="w-full max-w-md p-6 sm:p-8">
-        <div className="flex flex-col items-center justify-center gap-4">
-          <CircleCheckIcon className="size-12 text-green-500" />
-          <div className="grid gap-2 text-center">
-            <h1 className="text-2xl font-bold">Seu pedido foi aprovado!</h1>
-            <p className="text-muted-foreground">
-              O seu pedido <span className="text-primary">#12345</span> foi confirmado.
-            </p>
+      <Card className="w-full max-w-md p-6 sm:p-8 relative">
+        {status === 'approved' ? (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <CircleCheckIcon className="size-12 text-green-500" />
+            <div className="grid gap-2 text-center">
+              <h1 className="text-2xl font-bold">Seu pedido foi aprovado!</h1>
+              <p className="text-muted-foreground">
+                O seu pedido <span className="text-green-500">#{metadata.orderId}</span> foi
+                confirmado.
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <ClockIcon className="size-12 text-blue-500" />
+            <div className="grid gap-2 text-center">
+              <h1 className="text-2xl font-bold">Seu pedido está pendente!</h1>
+              <p className="text-muted-foreground">
+                O seu pedido <span className="text-primary">#{metadata.orderId}</span> está em
+                análise.
+              </p>
+            </div>
+          </div>
+        )}
         <Separator className="my-6" />
         <div className="grid gap-4">
           <div className="grid gap-2">
             <h2 className="text-lg font-semibold">Resumo do pedido</h2>
-            <ul className="grid gap-4">
-              <li className="hover:bg-muted rounded-md px-4 py-2">
-                <Link href={`/product/foo`} className="flex flex-row gap-4">
-                  {/* {item.product_sku.product.cover ? (
-                    <Image
-                      src={
-                        supabase.storage
-                          .from('products')
-                          .getPublicUrl(item.product_sku.product.cover).data.publicUrl
-                      }
-                      alt={item.product_sku.product.name}
-                      width={80}
-                      height={80}
-                      className="rounded-md object-cover"
-                    />
-                  ) : null} */}
-                  <div className="flex-1 flex flex-col gap-1">
-                    <h3 className="font-medium">Camisa foo</h3>
-                    {/* <h3 className="font-medium">{item.product_sku.product.name}</h3> */}
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">R$20 x 2</p>
-
-                      {/* {item.quantity !== 1 ? ( */}
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {/* R${item.product_sku.price.toFixed(2)} x {item.quantity} */}
-                      </p>
-                      {/* ) : null} */}
-
-                      <p className="font-medium">
-                        200
-                        {/* ${(item.product_sku.price * item.quantity).toFixed(2)} */}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </li>
+            <ul className="grid gap-4 overflow-auto max-h-48">
+              {metadata.items.map((item) => (
+                <Item key={item.id} item={item} isOrdered />
+              ))}
             </ul>
           </div>
           <div className="flex items-center justify-between font-medium">
             <span>Total</span>
-            <span>$299.00</span>
+            <span>R${metadata.total}</span>
           </div>
         </div>
         <Separator className="my-6" />
@@ -90,12 +75,7 @@ export default function Component() {
             Obrigado pela preferência!! Se precisar de qualquer suporte não hesite, contate-nos
           </p>
           <div className="flex gap-2">
-            <Link href="#" className="flex-1" prefetch={false}>
-              <Button variant="outline" className="w-full">
-                Ver detalhes do pedido
-              </Button>
-            </Link>
-            <Link href="#" className="flex-1" prefetch={false}>
+            <Link href="/" className="flex-1" prefetch={false}>
               <Button className="w-full">Continuar comprando</Button>
             </Link>
           </div>

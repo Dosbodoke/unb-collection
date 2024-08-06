@@ -29,6 +29,7 @@ export type OrderData = {
     title: string;
     imageUrl: string | null;
   }[];
+  totalValue: number;
 };
 
 const slideAnimation = {

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import { createPreference } from '@/components/carrinho/actions';
 
-import type { OrderData } from './drawer-footer';
+import type { OrderData } from '../index';
 
 const PayWithMercadoPago = ({ orderData }: { orderData: OrderData }) => {
   const [componentLoaded, setcomponentLoaded] = useState(false);

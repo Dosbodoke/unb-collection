@@ -97,11 +97,6 @@ export function CartFooter({
         };
       });
 
-      const orderData: OrderData = {
-        orderId: String(items[0]?.order_id) || '', // Convert to string and use empty string as fallback
-        items: verifiedItems,
-      };
-
       // Verify total value
       const calculatedTotal = verifiedItems.reduce(
         (sum, item) => sum + item.quantity * item.unit_price,
@@ -111,6 +106,12 @@ export function CartFooter({
         // Allow for small floating-point discrepancies
         throw new Error('Order total mismatch');
       }
+
+      const orderData: OrderData = {
+        orderId: String(items[0]?.order_id) || '',
+        items: verifiedItems,
+        totalValue: calculatedTotal,
+      };
 
       wipeCart();
       setOrder(orderData);
