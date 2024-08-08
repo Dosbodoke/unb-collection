@@ -1,21 +1,8 @@
 'use server';
 
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, Preference, type PreferenceMetadata } from 'mercadopago';
 
 import type { OrderData } from './index';
-
-type PreferenceMetadata = {
-  orderId: string;
-  total: number;
-  items: {
-    id: string;
-    quantity: number;
-    unit_price: number;
-    description: string;
-    title: string;
-    imageUrl: string | null;
-  }[];
-};
 
 export const createPreference = async ({
   orderData,
@@ -44,6 +31,8 @@ export const createPreference = async ({
         failure: `${hostUrl}/pedido`,
         pending: `${hostUrl}/pedido`,
       },
+      binary_mode: true, // Order can only be `approved` or `rejected`, this option removes pending orders
+      notification_url: `${hostUrl}/api/ipn`,
       statement_descriptor: 'UNB COLLECTION', // Up to 16 characters
       payment_methods: {
         excluded_payment_methods: [
