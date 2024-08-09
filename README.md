@@ -34,6 +34,7 @@ A E-commerce built with Next 14.2 and backed by supabase
 
    Follow the [Webhook configuration documentation](https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks#configuraoatravsdopaineldodesenvolvedor)
 
+   - On URL you should put **https://${YOUR_HOST}/api/mercado-pago-notification**
    - On events, select only **pagamentos**
    - After saving, copy the **Assinatura secreta** and add it to the `.env` under `MERCADO_PAGO_WEBHOOK_SECRET`
 
