@@ -32,7 +32,7 @@ export const createPreference = async ({
         pending: `${hostUrl}/pedido`,
       },
       binary_mode: true, // Order can only be `approved` or `rejected`, this option removes pending orders
-      notification_url: `${hostUrl}/api/ipn`,
+      notification_url: `${hostUrl}/api/mercado-pago-notification?source_news=webhooks`, // Added `?source_news=webhooks` to the notificatio_url to receive only Webhook notifications and not IPN
       statement_descriptor: 'UNB COLLECTION', // Up to 16 characters
       payment_methods: {
         excluded_payment_methods: [

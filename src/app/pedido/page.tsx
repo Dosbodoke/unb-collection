@@ -48,8 +48,8 @@ export default async function OrderDetails({
             <div className="grid gap-2 text-center">
               <h1 className="text-2xl font-bold">Seu pedido está pendente!</h1>
               <p className="text-muted-foreground">
-                O seu pedido <span className="text-primary">#{metadata.orderId}</span> está em
-                análise.
+                Finalize o pagamento do pedido{' '}
+                <span className="text-primary">#{metadata.orderId}</span> para garantir suas roupas.
               </p>
             </div>
           </div>

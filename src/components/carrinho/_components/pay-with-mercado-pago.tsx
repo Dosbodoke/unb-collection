@@ -4,10 +4,12 @@ import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import React, { useEffect, useState } from 'react';
 
 import { createPreference } from '@/components/carrinho/actions';
+import { useCartStore } from '@/stores/cart-store';
 
 import type { OrderData } from '../index';
 
 const PayWithMercadoPago = ({ orderData }: { orderData: OrderData }) => {
+  const { setCartOpen } = useCartStore();
   const [componentLoaded, setcomponentLoaded] = useState(false);
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
@@ -37,11 +39,15 @@ const PayWithMercadoPago = ({ orderData }: { orderData: OrderData }) => {
   }, [orderData, componentLoaded]);
 
   return preferenceId ? (
+    // @ts-expect-error:next-line
     <Wallet
       key="mercado-pago"
-      initialization={{ preferenceId }}
+      initialization={{ preferenceId, redirectMode: 'blank' }}
       locale="pt-BR"
       brand="UNB Collection"
+      onSubmit={async () => {
+        setCartOpen(false);
+      }}
     />
   ) : null;
 };
