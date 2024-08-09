@@ -30,9 +30,19 @@ A E-commerce built with Next 14.2 and backed by supabase
 
    After all steps, you should update the `.env.local` variables related to MERCADO PAGO, use the Test Credentials for test environment
 
+   You should also configure the application to receive Webhook notification from mercado pago, these notifications are responsible to update the status of the order when the payment is processed.
+
+   Follow the [Webhook configuration documentation](https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks#configuraoatravsdopaineldodesenvolvedor)
+
+   - On events, select only **pagamentos**
+   - After saving, copy the **Assinatura secreta** and add it to the `.env` under `MERCADO_PAGO_WEBHOOK_SECRET`
+
+   At the end of these steps, your `.env` should include the following variables
+
    ```
    NEXT_PUBLIC_MERCADO_PAGO_API_KEY=[INSERT MERCADO PAGO API KEY FOR TEST ENVIRONMENT]
    MERCADO_PAGO_ACCESS_TOKEN=[INSERT MERCADO PAGO API ACCESS TOKEN FOR TEST ENVIRONMENT]
+   MERCADO_PAGO_WEBHOOK_SECRET=[INSERT MERCADO PAGO WEBHOOK SECRET]
    ```
 
 5. You can now run the Next.js local development server:
@@ -44,3 +54,9 @@ A E-commerce built with Next 14.2 and backed by supabase
    The starter kit should now be running on [localhost:3000](http://localhost:3000/).
 
 > Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+
+> [!TIP]
+> To update local types for changes made on the cloud dashboard, you can link a projet with
+> `npx supabase login && npx supabase link`  
+> and then generate the types with
+> `npx supabase@latest gen types typescript --linked --schema storage,public,functions > src/utils/supabase/database.types.ts`

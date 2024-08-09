@@ -6,8 +6,10 @@ import React, { useEffect, useState } from 'react';
 import { createPreference } from '@/components/carrinho/actions';
 import { useCartStore } from '@/stores/cart-store';
 
-const PayWithMercadoPago = () => {
-  const { cart } = useCartStore();
+import type { OrderData } from '../index';
+
+const PayWithMercadoPago = ({ orderData }: { orderData: OrderData }) => {
+  const { setCartOpen } = useCartStore();
   const [componentLoaded, setcomponentLoaded] = useState(false);
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
@@ -17,17 +19,10 @@ const PayWithMercadoPago = () => {
 
   useEffect(() => {
     async function getPreferenceID() {
-      if (cart.length === 0) return;
+      if (!orderData) return;
       const res = await createPreference({
         hostUrl: window.location.origin,
-        orderData: cart.map((item) => ({
-          id: item.product_sku.id.toString(),
-          title: item.product_sku.product.name,
-          unit_price: item.product_sku.price,
-          quantity: item.quantity,
-          description: '',
-          category_id: 'fashion',
-        })),
+        orderData,
       });
 
       if (res.success) {
@@ -41,14 +36,18 @@ const PayWithMercadoPago = () => {
       });
       getPreferenceID();
     }
-  }, [cart, componentLoaded]);
+  }, [orderData, componentLoaded]);
 
   return preferenceId ? (
+    // @ts-expect-error:next-line
     <Wallet
       key="mercado-pago"
-      initialization={{ preferenceId }}
+      initialization={{ preferenceId, redirectMode: 'blank' }}
       locale="pt-BR"
       brand="UNB Collection"
+      onSubmit={async () => {
+        setCartOpen(false);
+      }}
     />
   ) : null;
 };

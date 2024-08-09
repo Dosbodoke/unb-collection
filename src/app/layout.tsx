@@ -10,6 +10,7 @@ import { Footer } from '@/components/globals/footer';
 import { Navbar } from '@/components/globals/navbar';
 import { WhatsAppButton } from '@/components/globals/whatsapp';
 import { Toaster } from '@/components/ui/sonner';
+import Providers from './providers';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -44,13 +45,15 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={GeistSans.className}>
       <body className="bg-[#efefef] text-foreground relative">
-        {modal}
-        <Navbar />
-        <main className="min-h-[90vh] flex flex-col">{children}</main>
-        <WhatsAppButton />
-        <Footer />
-        <AutoLogin />
-        <Toaster richColors theme="light" />
+        <Providers>
+          {modal}
+          <Navbar />
+          <main className="min-h-[90vh] flex flex-col">{children}</main>
+          <WhatsAppButton />
+          <Footer />
+          <AutoLogin />
+          <Toaster richColors theme="light" />
+        </Providers>
       </body>
       <Analytics />
       <Script src="https://accounts.google.com/gsi/client" async />

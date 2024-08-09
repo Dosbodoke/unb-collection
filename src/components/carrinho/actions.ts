@@ -1,18 +1,14 @@
 'use server';
 
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, Preference, type PreferenceMetadata } from 'mercadopago';
+
+import type { OrderData } from './index';
 
 export const createPreference = async ({
   orderData,
   hostUrl,
 }: {
-  orderData: {
-    id: string;
-    quantity: number;
-    unit_price: number;
-    description: string;
-    title: string;
-  }[];
+  orderData: OrderData;
   hostUrl: string;
 }): Promise<
   | {
@@ -35,7 +31,9 @@ export const createPreference = async ({
         failure: `${hostUrl}/pedido`,
         pending: `${hostUrl}/pedido`,
       },
-      statement_descriptor: 'UNB COLLECTION',
+      binary_mode: true, // Order can only be `approved` or `rejected`, this option removes pending orders
+      notification_url: `${hostUrl}/api/mercado-pago-notification?source_news=webhooks`, // Added `?source_news=webhooks` to the notificatio_url to receive only Webhook notifications and not IPN
+      statement_descriptor: 'UNB COLLECTION', // Up to 16 characters
       payment_methods: {
         excluded_payment_methods: [
           {
@@ -56,7 +54,12 @@ export const createPreference = async ({
         mode: 'not_specified',
         free_shipping: false,
       },
-      items: orderData,
+      items: orderData.items.map((item) => ({ ...item, category_id: 'fashion' })),
+      metadata: {
+        orderId: orderData.orderId,
+        total: orderData.totalValue,
+        items: orderData.items,
+      } satisfies PreferenceMetadata,
     },
   });
 
@@ -65,4 +68,19 @@ export const createPreference = async ({
   }
 
   return { success: false };
+};
+
+export const getPreference = async (preferenceId: string) => {
+  const client = new MercadoPagoConfig({
+    accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN as string,
+  });
+  const preference = new Preference(client);
+
+  const res = await preference.get({ preferenceId });
+
+  if (res.metadata) {
+    return res.metadata as PreferenceMetadata;
+  }
+
+  return null;
 };

@@ -1,3 +1,4 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import type { Variant } from '@/stores/cart-store';
@@ -15,6 +16,51 @@ type Props = {
 // Type guard to ensure size and color are not null
 function isValidVariant(variant: any): variant is Variant {
   return variant.size !== null && variant.color !== null;
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const supabase = createClient();
+
+  const { data: product, error } = await supabase
+    .from('product')
+    .select('*')
+    .eq('slug', params.slug)
+    .single();
+
+  if (error || !product) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  // Fetch the base URL from the parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: product.name,
+    description: product.description || `Details about ${product.name}`,
+    openGraph: {
+      title: product.name,
+      description: product.description || `Details about ${product.name}`,
+      images: product.cover
+        ? [
+            supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl,
+            ...previousImages,
+          ]
+        : previousImages,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description || `Details about ${product.name}`,
+      images: product.cover
+        ? [supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl]
+        : [],
+    },
+  };
 }
 
 export default async function ProductPage({ params: { slug } }: Props) {
