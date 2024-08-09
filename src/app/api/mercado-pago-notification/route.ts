@@ -75,7 +75,7 @@ function validateNotificationOrigin({
   xRequestId: string | null;
   xSignature: string | null;
 }) {
-  const secret = process.env.MERCADO_PAGO_SECRET;
+  const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET;
   if (!dataId || !xRequestId || !xSignature || !secret) {
     console.log('Invalid arguments for HMAC validation');
     throw new Error('Invalid arguments for HMAC validation');
