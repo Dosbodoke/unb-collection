@@ -48,7 +48,7 @@ export function CartFooter({
         return;
       }
 
-      // Invalidate cache since item is not avaiable anymore
+      // Invalidate cache since item quantity was modified
       for (const cartProduct of cart) {
         invalidateProduct({ slug: cartProduct.product_sku.product.slug });
       }
