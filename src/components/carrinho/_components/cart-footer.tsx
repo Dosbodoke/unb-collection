@@ -13,6 +13,7 @@ import { type CartItem, useCartStore } from '@/stores/cart-store';
 import { createClient } from '@/utils/supabase/client';
 
 import type { OrderData } from '../index';
+import { invalidateProduct } from '@/utils/cached-queries';
 
 export function CartFooter({
   setOrder,
@@ -44,8 +45,12 @@ export function CartFooter({
       });
 
       if (!items || items.length === 0 || error) {
-        console.log({ error });
         return;
+      }
+
+      // Invalidate cache since item is not avaiable anymore
+      for (const cartProduct of cart) {
+        invalidateProduct({ slug: cartProduct.product_sku.product.slug });
       }
 
       const { data: variants, error: variantError } = await supabase

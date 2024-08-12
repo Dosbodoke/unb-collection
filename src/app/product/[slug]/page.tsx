@@ -2,7 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import type { Variant } from '@/stores/cart-store';
-import { createClient } from '@/utils/supabase/server';
+import { getProduct } from '@/utils/cached-queries';
 
 import { ProductBreadcrumb } from './_components/breadcrumb';
 import { ImageCarousel } from './_components/image-carousel';
@@ -14,6 +14,7 @@ type Props = {
 };
 
 // Type guard to ensure size and color are not null
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isValidVariant(variant: any): variant is Variant {
   return variant.size !== null && variant.color !== null;
 }
@@ -22,13 +23,7 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const supabase = createClient();
-
-  const { data: product, error } = await supabase
-    .from('product')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
+  const { error, product } = await getProduct({ slug: params.slug });
 
   if (error || !product) {
     return {
@@ -45,49 +40,21 @@ export async function generateMetadata(
     openGraph: {
       title: product.name,
       description: product.description || `Details about ${product.name}`,
-      images: product.cover
-        ? [
-            supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl,
-            ...previousImages,
-          ]
-        : previousImages,
+      images: product.coverImageURL ? [product.coverImageURL, ...previousImages] : previousImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: product.name,
       description: product.description || `Details about ${product.name}`,
-      images: product.cover
-        ? [supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl]
-        : [],
+      images: product.coverImageURL ? [product.coverImageURL] : [],
     },
   };
 }
 
 export default async function ProductPage({ params: { slug } }: Props) {
-  const supabase = createClient();
+  const { error, product, variants } = await getProduct({ slug });
 
-  const { data: product, error } = await supabase
-    .from('product')
-    .select('*')
-    .eq('slug', slug)
-    .single();
-
-  if (error) {
-    return notFound();
-  }
-
-  const { data: variants, error: variantError } = await supabase
-    .from('products_skus')
-    .select(
-      `*,
-      size:product_attributes!products_skus_size_attribute_id_fkey(value),
-      color:product_attributes!products_skus_color_attribute_id_fkey(value),
-      product:product!products_skus_product_id_fkey(*)
-    `,
-    )
-    .eq('product_id', product.id);
-
-  if (!variants || variants.length === 0 || variantError) {
+  if (error || !product || !variants || variants.length === 0) {
     return notFound();
   }
 
@@ -106,12 +73,10 @@ export default async function ProductPage({ params: { slug } }: Props) {
           <ImageCarousel
             image_urls={
               [
-                product.cover
-                  ? supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl
-                  : null,
-                ...product.images.map(
-                  (image) => supabase.storage.from('products').getPublicUrl(image).data.publicUrl,
-                ),
+                product.coverImageURL || null,
+                // ...product.images.map(
+                //   (image) => supabase.storage.from('products').getPublicUrl(image).data.publicUrl,
+                // ),
               ].filter((val) => val !== null) as string[]
             }
             productName={product.name}
