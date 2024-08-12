@@ -5,6 +5,7 @@ import { AlertTriangleIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import { invalidateProduct } from '@/cache/product';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { DrawerFooter } from '@/components/ui/drawer';
@@ -44,8 +45,12 @@ export function CartFooter({
       });
 
       if (!items || items.length === 0 || error) {
-        console.log({ error });
         return;
+      }
+
+      // Invalidate cache since item quantity was modified
+      for (const cartProduct of cart) {
+        invalidateProduct({ slug: cartProduct.product_sku.product.slug });
       }
 
       const { data: variants, error: variantError } = await supabase

@@ -1,22 +1,16 @@
+import { getPromo } from '@/cache/promo';
 import DotPattern from '@/components/magicui/dot-pattern';
 import SparklesText from '@/components/magicui/sparkles-text';
 import { ProductGrid } from '@/components/product-grid';
-import { createClient } from '@/utils/supabase/server';
 
 import { HeroSection } from './_components/hero-section';
 
 export default async function Index() {
-  const supabase = createClient();
-
-  const promoList = await supabase.storage.from('promo').list();
-  const urls =
-    promoList.data?.map(
-      (file) => supabase.storage.from('promo').getPublicUrl(file.name).data.publicUrl,
-    ) || [];
+  const { promoList } = await getPromo();
 
   return (
     <div className="flex-1 flex flex-col pt-24">
-      <HeroSection items={urls} />
+      <HeroSection items={promoList || []} />
       <SparklesText
         className="text-center py-8"
         text="Destaques"
