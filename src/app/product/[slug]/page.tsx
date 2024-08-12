@@ -1,8 +1,8 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { getProduct } from '@/cache/product';
 import type { Variant } from '@/stores/cart-store';
-import { getProduct } from '@/utils/cached-queries';
 
 import { ProductBreadcrumb } from './_components/breadcrumb';
 import { ImageCarousel } from './_components/image-carousel';
@@ -20,33 +20,34 @@ function isValidVariant(variant: any): variant is Variant {
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  { params: { slug } }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { error, product } = await getProduct({ slug: params.slug });
+  const { error, product } = await getProduct({ slug });
 
   if (error || !product) {
     return {
-      title: 'Product Not Found',
+      title: 'Produto não encontrado',
     };
   }
 
   // Fetch the base URL from the parent metadata
   const previousImages = (await parent).openGraph?.images || [];
+  const coverUrl = product.imageUrls.length > 0 ? product.imageUrls[0] : undefined;
 
   return {
     title: product.name,
-    description: product.description || `Details about ${product.name}`,
+    description: product.description || `UNB COLLECTION | ${product.name}`,
     openGraph: {
       title: product.name,
-      description: product.description || `Details about ${product.name}`,
-      images: product.coverImageURL ? [product.coverImageURL, ...previousImages] : previousImages,
+      description: product.description || `UNB COLLECTION | ${product.name}`,
+      images: coverUrl ? [coverUrl, ...previousImages] : previousImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: product.name,
-      description: product.description || `Details about ${product.name}`,
-      images: product.coverImageURL ? [product.coverImageURL] : [],
+      description: product.description || `UNB COLLECTION | ${product.name}`,
+      images: coverUrl ? [coverUrl, ...previousImages] : previousImages,
     },
   };
 }
@@ -70,17 +71,7 @@ export default async function ProductPage({ params: { slug } }: Props) {
       <div className="max-w-6xl px-4 mx-auto py-6 flex flex-col gap-6">
         <ProductBreadcrumb itemName={product.name} />
         <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
-          <ImageCarousel
-            image_urls={
-              [
-                product.coverImageURL || null,
-                // ...product.images.map(
-                //   (image) => supabase.storage.from('products').getPublicUrl(image).data.publicUrl,
-                // ),
-              ].filter((val) => val !== null) as string[]
-            }
-            productName={product.name}
-          />
+          <ImageCarousel image_urls={product.imageUrls} productName={product.name} />
           <div className="space-y-4">
             <div className="grid gap-4">
               <h1 className="font-bold text-3xl lg:text-4xl">{product.name}</h1>

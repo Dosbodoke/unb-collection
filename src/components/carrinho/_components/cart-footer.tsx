@@ -5,6 +5,7 @@ import { AlertTriangleIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import { invalidateProduct } from '@/cache/product';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { DrawerFooter } from '@/components/ui/drawer';
@@ -13,7 +14,6 @@ import { type CartItem, useCartStore } from '@/stores/cart-store';
 import { createClient } from '@/utils/supabase/client';
 
 import type { OrderData } from '../index';
-import { invalidateProduct } from '@/utils/cached-queries';
 
 export function CartFooter({
   setOrder,

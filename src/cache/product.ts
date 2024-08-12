@@ -2,7 +2,7 @@
 
 import { revalidateTag, unstable_cache } from 'next/cache';
 
-import { createClient } from './supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
 export const getProduct = async (params: { slug: string }) => {
   const supabase = createClient();
@@ -18,9 +18,19 @@ export const getProduct = async (params: { slug: string }) => {
         return { product: null, variants: null, error };
       }
 
+      // Fetch cover image if available
       const coverImageURL = data.cover
-        ? supabase.storage.from('products').getPublicUrl(data.cover).data.publicUrl
-        : '';
+        ? supabase.storage.from('products').getPublicUrl(data.cover).data.publicUrl || null
+        : null;
+
+      // Fetch all other image URLs
+      const backImageUrls = data.images
+        ? data.images.map(
+            (image) => supabase.storage.from('products').getPublicUrl(image).data.publicUrl || null,
+          )
+        : [];
+
+      const imageUrls = [coverImageURL, ...backImageUrls].filter((val) => val !== null) as string[];
 
       const { data: variants, error: variantError } = await supabase
         .from('products_skus')
@@ -34,10 +44,10 @@ export const getProduct = async (params: { slug: string }) => {
         .eq('product_id', data.id);
 
       if (variantError) {
-        return { product: { ...data, coverImageURL }, variants: null, error: variantError };
+        return { product: { ...data, imageUrls }, variants: null, error: variantError };
       }
 
-      return { product: { ...data, coverImageURL }, variants };
+      return { product: { ...data, imageUrls }, variants };
     },
     ['product', params.slug],
     {
