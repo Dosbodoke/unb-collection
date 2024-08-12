@@ -41,13 +41,13 @@ export async function generateMetadata(
     openGraph: {
       title: product.name,
       description: product.description || `UNB COLLECTION | ${product.name}`,
-      images: coverUrl ? [coverUrl, ...previousImages] : previousImages,
+      images: coverUrl ? [coverUrl] : previousImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: product.name,
       description: product.description || `UNB COLLECTION | ${product.name}`,
-      images: coverUrl ? [coverUrl, ...previousImages] : previousImages,
+      images: coverUrl ? [coverUrl] : previousImages,
     },
   };
 }
