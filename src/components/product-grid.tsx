@@ -2,30 +2,27 @@ import Link from 'next/link';
 import React from 'react';
 
 import { UnbCollectionIcon } from '@/assets';
+import { Database } from '@/utils/supabase/database.types';
 import { createClient } from '@/utils/supabase/server';
 
 import { ImageWithHover } from './product-image';
 
-const ProductGrid = async () => {
+const ProductGrid = async ({
+  products,
+}: {
+  products: Array<
+    Database['public']['Tables']['product']['Row'] & {
+      products_skus: Array<Database['public']['Tables']['products_skus']['Row']>;
+    }
+  >;
+}) => {
   const supabase = createClient();
-
-  const { data: highlights, error } = await supabase.from('highlights').select(`
-    id,
-    product(
-      *,
-      products_skus(*)
-    )
-  `);
-
-  if (error) return null;
-
-  const products = highlights.flatMap((h) => h.product || []);
 
   return (
     <ul className="grid w-full max-w-6xl mx-auto sm:grid-cols-3 grid-cols-2">
       {products.map((product) => (
         <li key={product.id} className="bg-white border border-black">
-          <Link href={`/product/${product.slug}`} className="flex flex-col items-center">
+          <Link href={`/produtos/${product.slug}`} className="flex flex-col items-center">
             {product.cover ? (
               <ImageWithHover
                 cover={supabase.storage.from('products').getPublicUrl(product.cover).data.publicUrl}

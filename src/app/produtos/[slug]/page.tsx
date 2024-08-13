@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getProduct } from '@/cache/product';
 import type { Variant } from '@/stores/cart-store';
 
-import { ProductBreadcrumb } from './_components/breadcrumb';
+import { ProductBreadcrumb } from '../_components/breadcrumb';
 import { ImageCarousel } from './_components/image-carousel';
 import { ProductForm } from './_components/product-form';
 

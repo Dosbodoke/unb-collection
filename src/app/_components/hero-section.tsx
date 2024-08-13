@@ -20,7 +20,7 @@ export const HeroSection = ({ items }: { items: string[] }) => {
     {
       name: 'Cropped UNB',
       description: 'Perfeiro para os dias de calor',
-      href: '/product/cropped-manga-longa',
+      href: '/produtos/cropped-manga-longa',
       cta: 'Ver cropped',
       imageUrl: items[1] as string,
       className: 'xl:col-start-4 xl:col-end-13 xl:row-start-7 xl:row-end-11',

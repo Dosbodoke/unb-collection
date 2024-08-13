@@ -52,7 +52,7 @@ const Item = forwardRef<HTMLLIElement, ItemProps>(({ item, removeFromCart, isOrd
       className="hover:bg-muted px-4 py-2"
     >
       <Link
-        href={isCartItem(item) ? `/product/${item.product_sku.product.slug}` : '#'}
+        href={isCartItem(item) ? `/produtos/${item.product_sku.product.slug}` : '#'}
         className="flex flex-row gap-4"
       >
         {imageUrl ? (
