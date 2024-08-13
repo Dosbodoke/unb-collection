@@ -53,6 +53,24 @@ export type Database = {
           },
         ]
       }
+      newsletter_subscriptions: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: number
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: never
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: never
+        }
+        Relationships: []
+      }
       order_details: {
         Row: {
           created_at: string
@@ -356,6 +374,10 @@ export type Database = {
           product_id: number
           quantity: number
         }[]
+      }
+      delete_pending_orders: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
     }
     Enums: {

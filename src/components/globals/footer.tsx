@@ -3,9 +3,8 @@ import Link from 'next/link';
 
 import { UnbCollectionIcon, WhatsAppIcon } from '@/assets';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 
-import { AnimatedSubscribeButton } from './animated-subscribe-button';
+import { AnimatedSubscribeButton } from './newsletter-subscribe';
 
 export const Footer = () => {
   return (
@@ -44,10 +43,7 @@ export const Footer = () => {
                 Inscreva-se na nossa Newsletter e receba promoções exclusivas, novidades de coleções
                 e muito mais!
               </p>
-              <div className="flex w-full max-w-sm items-center space-x-2">
-                <Input className="text-white" type="email" placeholder="Seu email" />
-                <AnimatedSubscribeButton />
-              </div>
+              <AnimatedSubscribeButton />
             </div>
             <Link
               href="https://www.instagram.com/unb_collection/"
