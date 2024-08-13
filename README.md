@@ -12,7 +12,7 @@ A E-commerce built with Next 14.2 and backed by supabase
 
 2. Clone this repository and go to it's directory
 
-3. Rename `.env.local.example` to `.env.local` and update the following:
+3. Rename `.env.example` to `.env.local` and update the following:
 
    ```
    NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]

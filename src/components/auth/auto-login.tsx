@@ -25,7 +25,7 @@ const GoogleOneTapLogin = () => {
   }, []);
 
   async function handleSignInWithGoogle(response: any) {
-    const { data, error } = await supabase.auth.signInWithIdToken({
+    const { data } = await supabase.auth.signInWithIdToken({
       provider: 'google',
       token: response.credential,
     });
