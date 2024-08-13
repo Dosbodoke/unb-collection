@@ -61,7 +61,7 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
     <form className="grid gap-4 md:gap-6">
       <SizeVariant sizes={sizes} onValueChange={handleChangeSize} />
       <ColorVariant colors={colors} onValueChange={handleChangeColor} />
-      <ProductPrice price={variant.price} discountPercentage={variant.price > 55 ? 0.2 : 0} />
+      <ProductPrice price={variant.price} />
       <div className="flex gap-2">
         <ConfettiButton
           variant="default"

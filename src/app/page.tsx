@@ -2,11 +2,25 @@ import { getPromo } from '@/cache/promo';
 import DotPattern from '@/components/magicui/dot-pattern';
 import SparklesText from '@/components/magicui/sparkles-text';
 import { ProductGrid } from '@/components/product-grid';
+import { createClient } from '@/utils/supabase/server';
 
 import { HeroSection } from './_components/hero-section';
 
 export default async function Index() {
+  const supabase = createClient();
   const { promoList } = await getPromo();
+
+  const { data: highlights, error } = await supabase.from('highlights').select(`
+    id,
+    product(
+      *,
+      products_skus(*)
+    )
+  `);
+
+  if (error) return null;
+
+  const products = highlights.flatMap((h) => h.product || []);
 
   return (
     <div className="flex-1 flex flex-col pt-24">
@@ -20,7 +34,7 @@ export default async function Index() {
         }}
         sparklesCount={6}
       />
-      <ProductGrid />
+      <ProductGrid products={products} />
       <DotPattern
         width={20}
         height={20}

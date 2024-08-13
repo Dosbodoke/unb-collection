@@ -18,9 +18,9 @@ import { createClient } from '@/utils/supabase/client';
 
 const MotionButton = motion(Button);
 
-const passwordSchema = z.string().min(8).max(100);
+const passwordSchema = z.string().min(8, { message: 'Senha deve ter pelo menos 8 caracteres' });
 const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email({ message: 'Email inválido' }),
   password: passwordSchema,
 });
 

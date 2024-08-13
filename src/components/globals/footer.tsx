@@ -3,9 +3,8 @@ import Link from 'next/link';
 
 import { UnbCollectionIcon, WhatsAppIcon } from '@/assets';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 
-import { AnimatedSubscribeButton } from './animated-subscribe-button';
+import { AnimatedSubscribeButton } from './newsletter-subscribe';
 
 export const Footer = () => {
   return (
@@ -44,35 +43,38 @@ export const Footer = () => {
                 Inscreva-se na nossa Newsletter e receba promoções exclusivas, novidades de coleções
                 e muito mais!
               </p>
-              <div className="flex w-full max-w-sm items-center space-x-2">
-                <Input className="text-white" type="email" placeholder="Seu email" />
-                <AnimatedSubscribeButton />
+              <AnimatedSubscribeButton />
+            </div>
+            {process.env.NEXT_PUBLIC_INSTAGRAM ? (
+              <Link
+                href={`https://www.instagram.com/${process.env.NEXT_PUBLIC_INSTAGRAM.replace('@', '')}/`}
+                prefetch={false}
+                target="_blank"
+                className="flex gap-2 items-center "
+              >
+                <Instagram className="h-6 w-6 text-[#E4405F]" />
+                <span className="text-gray-400">{process.env.NEXT_PUBLIC_INSTAGRAM}</span>
+              </Link>
+            ) : null}
+
+            {process.env.NEXT_PUBLIC_WHATSAPP ? (
+              <Link
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP.replace(/\D/g, '')}?text=Olá%20👋,%20vim%20pelo%20site%20UNB%20Collection`}
+                prefetch={false}
+                target="_blank"
+                className="flex gap-2 items-center"
+              >
+                <WhatsAppIcon className="fill-[#25D366] h-6 w-6" />
+                <span className="text-gray-400">{process.env.NEXT_PUBLIC_WHATSAPP}</span>
+              </Link>
+            ) : null}
+
+            {process.env.NEXT_PUBLIC_CONTACT_EMAIL ? (
+              <div className="flex items-center space-x-2">
+                <MailIcon className="h-6 w-6 text-blue-500" />
+                <span className="text-gray-400">{process.env.NEXT_PUBLIC_CONTACT_EMAIL}</span>
               </div>
-            </div>
-            <Link
-              href="https://www.instagram.com/unb_collection/"
-              prefetch={false}
-              target="_blank"
-              className="flex gap-2 items-center "
-            >
-              <Instagram className="h-6 w-6 text-[#E4405F]" />
-              <span className="text-gray-400">@unb_collection</span>
-            </Link>
-
-            <Link
-              href="https://wa.link/0h6x8c"
-              prefetch={false}
-              target="_blank"
-              className="flex gap-2 items-center "
-            >
-              <WhatsAppIcon className="fill-[#25D366] h-6 w-6" />
-              <span className="text-gray-400">+55 (61) 98295-9436</span>
-            </Link>
-
-            <div className="flex items-center space-x-2">
-              <MailIcon className="h-6 w-6 text-blue-500" />
-              <span className="text-gray-400">unb-collection@gmail.com</span>
-            </div>
+            ) : null}
           </div>
         </div>
       </div>

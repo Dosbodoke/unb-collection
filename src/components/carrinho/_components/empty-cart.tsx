@@ -17,7 +17,7 @@ export function EmptyCart() {
       <div className="flex items-center flex-col">
         <h2 className="text-center text-xl text-muted-foreground">Seu carrinho está vazio</h2>
         <Button className="text-center" variant="link" asChild>
-          <Link href="/products">Explorar produtos</Link>
+          <Link href="/produtos">Explorar produtos</Link>
         </Button>
       </div>
     </div>
