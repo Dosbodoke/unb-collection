@@ -69,18 +69,24 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
+          notes: string | null;
+          payment_data: Json | null;
           status: string;
           user_id: string;
         };
         Insert: {
           created_at?: string;
           id?: number;
+          notes?: string | null;
+          payment_data?: Json | null;
           status: string;
           user_id: string;
         };
         Update: {
           created_at?: string;
           id?: number;
+          notes?: string | null;
+          payment_data?: Json | null;
           status?: string;
           user_id?: string;
         };
@@ -360,6 +366,7 @@ export type Database = {
         Args: {
           user_id: string;
           items_list: Json;
+          notes: string;
         };
         Returns: {
           created_at: string;

@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AlertTriangleIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { invalidateProduct } from '@/cache/product';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -26,6 +26,8 @@ export function CartFooter({
   const router = useRouter();
   const supabase = createClient();
 
+  const [notes, setNotes] = useState(''); // State to store notes
+
   const createOrder = useMutation({
     mutationFn: async (cart: CartItem[]) => {
       const {
@@ -42,6 +44,7 @@ export function CartFooter({
       const { data: items, error } = await supabase.rpc('create_order', {
         user_id: user.id,
         items_list: cart.map((item) => ({ id: item.product_sku.id, quantity: item.quantity })),
+        notes,
       });
 
       if (!items || items.length === 0 || error) {
@@ -137,7 +140,12 @@ export function CartFooter({
             Ribeiro
           </AlertDescription>
         </Alert>
-        <Textarea placeholder="Adicione uma nota ao seu pedido" className="resize-none mt-2" />
+        <Textarea
+          placeholder="Adicione uma nota ao seu pedido"
+          className="resize-none mt-2"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
       </div>
       <div className="flex items-center justify-between">
         <p className="text-gray-500 dark:text-gray-400">total</p>

@@ -8,7 +8,6 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: NextRequest) {
   // Instantiate clent instances
-  const supabase = createClient();
   const client = new MercadoPagoConfig({
     accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN as string,
   });
@@ -18,6 +17,11 @@ export async function POST(req: NextRequest) {
     // Extract the signature and body from the request
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.search);
+    const type = searchParams.get('type');
+
+    if (type !== 'payment') {
+      throw new Error('Requisição deve ser do tipo `payment`');
+    }
 
     validateNotificationOrigin({
       dataId: searchParams.get('data.id'),
@@ -25,17 +29,21 @@ export async function POST(req: NextRequest) {
       xSignature: req.headers.get('x-signature'),
     });
 
-    const rawBody = await req.text();
     // Parse the JSON body
-    const { id: paymentId } = JSON.parse(rawBody);
+    const rawBody = await req.text();
+    const {
+      data: { id: paymentId },
+    } = JSON.parse(rawBody);
 
     // Fetch the payment details from MercadoPago
-    const payment = await paymentClient.get(paymentId);
-    const orderId = (payment.metadata as PreferenceMetadata)?.orderId;
+    const payment = await paymentClient.get({ id: paymentId });
+    const orderId = (payment.metadata as PreferenceMetadata)?.order_id;
     const paymentStatus = payment.status;
 
     // Update database order status
     if (paymentStatus && orderId) {
+      const supabase = createClient();
+
       const statuses = {
         approved: ['approved'],
         pending: ['pending', 'authorized', 'in_process', 'in_mediation'],
@@ -49,8 +57,9 @@ export async function POST(req: NextRequest) {
 
       const { error } = await supabase
         .from('order_details')
-        .update({ status: orderStatus })
-        .eq('id', orderId);
+        .update({ status: orderStatus, payment_data: JSON.stringify(payment) })
+        .eq('id', orderId)
+        .select();
 
       if (error) {
         console.error('Error updating order status in database:', error);

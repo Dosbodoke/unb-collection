@@ -56,8 +56,8 @@ export const createPreference = async ({
       },
       items: orderData.items.map((item) => ({ ...item, category_id: 'fashion' })),
       metadata: {
-        orderId: orderData.orderId,
-        total: orderData.totalValue,
+        order_id: orderData.orderId,
+        totalValue: orderData.totalValue,
         items: orderData.items,
       } satisfies PreferenceMetadata,
     },

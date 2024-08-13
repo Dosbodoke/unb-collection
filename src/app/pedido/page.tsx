@@ -37,7 +37,7 @@ export default async function OrderDetails({
             <div className="grid gap-2 text-center">
               <h1 className="text-2xl font-bold">Seu pedido foi aprovado!</h1>
               <p className="text-muted-foreground">
-                O seu pedido <span className="text-green-500">#{metadata.orderId}</span> foi
+                O seu pedido <span className="text-green-500">#{metadata.order_id}</span> foi
                 confirmado.
               </p>
             </div>
@@ -49,7 +49,8 @@ export default async function OrderDetails({
               <h1 className="text-2xl font-bold">Seu pedido está pendente!</h1>
               <p className="text-muted-foreground">
                 Finalize o pagamento do pedido{' '}
-                <span className="text-primary">#{metadata.orderId}</span> para garantir suas roupas.
+                <span className="text-primary">#{metadata.order_id}</span> para garantir suas
+                roupas.
               </p>
             </div>
           </div>
@@ -66,7 +67,7 @@ export default async function OrderDetails({
           </div>
           <div className="flex items-center justify-between font-medium">
             <span>Total</span>
-            <span>R${metadata.total}</span>
+            <span>R${metadata.totalValue}</span>
           </div>
         </div>
         <Separator className="my-6" />

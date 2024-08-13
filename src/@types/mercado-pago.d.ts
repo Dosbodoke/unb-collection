@@ -3,8 +3,8 @@ import 'mercadopago';
 
 declare module 'mercadopago' {
   export interface PreferenceMetadata {
-    orderId: string;
-    total: number;
+    order_id: string;
+    totalValue: number;
     items: {
       id: string;
       quantity: number;
