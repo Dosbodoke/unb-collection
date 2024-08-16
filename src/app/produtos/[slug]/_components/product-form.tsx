@@ -12,20 +12,11 @@ import { ProductPrice } from './product-price';
 import { type Sizes, SizeVariant } from './size-variant';
 
 const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
-  const { addToCart } = useCartStore();
+  const { addToCart, cart } = useCartStore();
   const [selectedSize, setSelectedSize] = useState<Sizes>();
   const [selectedColor, setSelectedColor] = useState<Colors>();
 
   const sizes = new Set(productVariants.map((product) => product.size?.value as Sizes));
-
-  function handleChangeSize(value: Sizes) {
-    setSelectedSize(value);
-    setSelectedColor(undefined);
-  }
-
-  function handleChangeColor(value: Colors) {
-    setSelectedColor(value);
-  }
 
   const colors = useMemo(() => {
     const colorsSet = new Set<Colors>();
@@ -53,9 +44,22 @@ const ProductForm = ({ productVariants }: { productVariants: Variant[] }) => {
       return p;
     }) || productVariants[0];
 
+  function handleChangeSize(value: Sizes) {
+    setSelectedSize(value);
+    setSelectedColor(undefined);
+  }
+
+  function handleChangeColor(value: Colors) {
+    setSelectedColor(value);
+  }
+
   if (!variant) return null;
 
-  const productInStock = variant.stock !== 0;
+  // Product stock minus the quantity on the user cart
+  const productInStock =
+    variant.stock -
+      (cart.find((p) => p.product_sku.product_id === variant.product_id)?.quantity || 0) >
+    0;
 
   return (
     <form className="grid gap-4 md:gap-6">
