@@ -55,6 +55,14 @@ export default function UserDropdown({ user }: { user: User | null }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem
+          className="flex justify-between cursor-pointer"
+          disabled={loading}
+          onClick={() => router.push('/pedidos')}
+        >
+          <span>Meus pedidos</span>
+          <LogOutIcon className="h-4 w-4" />
+        </DropdownMenuItem>
+        <DropdownMenuItem
           className="text-red-600 flex justify-between cursor-pointer"
           disabled={loading}
           onClick={handleSignOut}
